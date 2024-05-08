@@ -1,0 +1,4 @@
+relatos graciosos dependiendo del nivel de suerte o habilidad que tuvo cada partido y torneo
+
+JUGADOR -> TORNEO -> PARTIDO
+CRUD       CRUD      CRUD
