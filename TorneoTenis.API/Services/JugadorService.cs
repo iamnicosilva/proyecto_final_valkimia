@@ -35,7 +35,43 @@ namespace TorneoTenis.API.Services
         }
 
 
+        public async Task<Jugador> BuscarJugador(int id)
+        {
 
+            // ESTO SE DEBE PASAR A UN SERVICIO BUSCAR_JUGADOR_POR_ID:
+
+            var JugadorEspecífico = await _torneoTenisContext.Set<Jugador>()
+                                    .Where(a =>a.Id == id).FirstOrDefaultAsync();
+
+            if (JugadorEspecífico == null || JugadorEspecífico.Eliminado) 
+                throw new Exception("El jugador no se encuentra");
+            // fin
+
+
+            return JugadorEspecífico;
+            
+        }
+
+
+        public async Task ActualizarJugador(int id,JugadorRequest actualizadoJugador)
+        {
+
+            var jugadorExistente = await _torneoTenisContext.Set<Jugador>()
+                        .Where(a => a.Id == id).FirstOrDefaultAsync();
+
+            if (jugadorExistente == null || jugadorExistente.Eliminado)
+            {
+                throw new Exception("El jugador no se encuentra");
+            }
+
+            var NuevoJugadorAActualizar = actualizadoJugador.ToJugador();
+
+            _torneoTenisContext.Update(id, NuevoJugadorAActualizar);
+
+            _torneoTenisContext.Add(NuevoJugadorAActualizar);
+
+            await _torneoTenisContext.SaveChangesAsync();
+        }
 
 
 
