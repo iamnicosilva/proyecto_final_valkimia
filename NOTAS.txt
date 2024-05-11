@@ -1,4 +1,7 @@
-relatos graciosos dependiendo del nivel de suerte o habilidad que tuvo cada partido y torneo
++ relatos graciosos dependiendo del nivel de suerte o habilidad que tuvo cada partido y torneo
++ el tipo de cancha influye sobre la eleccion de ganador dependiendo de sus habilidades
++ cada partido jugado aumenta las habilidades de cada jugador
+
 
 JUGADOR -> TORNEO -> PARTIDO
 CRUD       CRUD      CRUD

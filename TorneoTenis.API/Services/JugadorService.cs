@@ -53,7 +53,7 @@ namespace TorneoTenis.API.Services
         }
 
 
-        public async Task ActualizarJugador(int id,JugadorRequest actualizadoJugador)
+        public async Task ActualizarJugador(int id,JugadorRequest JugadorActualizado)
         {
 
             var jugadorExistente = await _torneoTenisContext.Set<Jugador>()
@@ -64,11 +64,23 @@ namespace TorneoTenis.API.Services
                 throw new Exception("El jugador no se encuentra");
             }
 
-            var NuevoJugadorAActualizar = actualizadoJugador.ToJugador();
+            jugadorExistente.UpdateJugador(JugadorActualizado);
 
-            _torneoTenisContext.Update(id, NuevoJugadorAActualizar);
+            await _torneoTenisContext.SaveChangesAsync();
+        }
 
-            _torneoTenisContext.Add(NuevoJugadorAActualizar);
+        public async Task EliminarJugador(int id)
+        {
+
+            var jugadorExistente = await _torneoTenisContext.Set<Jugador>()
+                        .Where(a => a.Id == id).FirstOrDefaultAsync();
+
+            if (jugadorExistente == null || jugadorExistente.Eliminado)
+            {
+                throw new Exception("El jugador no se encuentra");
+            }
+
+            jugadorExistente.DeleteJugador();
 
             await _torneoTenisContext.SaveChangesAsync();
         }

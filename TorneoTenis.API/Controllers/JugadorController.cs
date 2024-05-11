@@ -41,6 +41,21 @@ namespace TorneoTenis.API.Controllers
 
         }
 
+        //UPDATE JUGADOR:
+        [HttpPut]
+        [Route("/{id}")]
+        public async Task ActualizarJugador(int id,JugadorRequest nuevoJugador)
+        {
+            await _jugadorService.ActualizarJugador(id, nuevoJugador);
+        }
+
+        //DELETE JUGADOR:
+        [HttpPut]
+        [Route("/delete/{id}")]
+        public async Task EliminarJugador(int id)
+        {
+            await _jugadorService.EliminarJugador(id);
+        }
 
 
         //IActionResult Post([FromBody] JugadorRequest jugadorRequest)

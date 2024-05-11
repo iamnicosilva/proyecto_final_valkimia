@@ -2,6 +2,7 @@
 using TorneoTenis.API.Models.Request;
 using TorneoTenis.API.Models.Response;
 using TorneoTenis.API.Models.Response.DTO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace TorneoTenis.API.Mappers
@@ -19,9 +20,28 @@ namespace TorneoTenis.API.Mappers
                 Velocidad = jugadorRequest.Velocidad,
                 Reaccion = jugadorRequest.Reaccion,
                 EsHombre = jugadorRequest.EsHombre
-                
+
             };
         }
 
+        public static Jugador UpdateJugador(this Jugador jugadorExistente, JugadorRequest jugadorRequest)
+        {
+            jugadorExistente.Nombre = jugadorRequest.Nombre;
+            jugadorExistente.Apellido = jugadorRequest.Apellido;
+            jugadorExistente.Habilidad = jugadorRequest.Habilidad;
+            jugadorExistente.Fuerza = jugadorRequest.Fuerza;
+            jugadorExistente.Velocidad = jugadorRequest.Velocidad;
+            jugadorExistente.Reaccion = jugadorRequest.Reaccion;
+            jugadorExistente.EsHombre = jugadorRequest.EsHombre;
+
+            return jugadorExistente;
+        }
+
+        public static Jugador DeleteJugador(this Jugador jugadorExistente)
+        {
+            jugadorExistente.Eliminado = true;
+
+            return jugadorExistente;
+        }
     }
 }
