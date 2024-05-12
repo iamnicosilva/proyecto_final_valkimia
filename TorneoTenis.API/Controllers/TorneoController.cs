@@ -10,67 +10,67 @@ namespace TorneoTenis.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class JugadorController : ControllerBase
+    public class TorneoController : ControllerBase
     {
-        private readonly IJugadorService _jugadorService;
+        private readonly ITorneoService _torneoService;
 
-        public JugadorController( IJugadorService jugadorService )
+        public TorneoController(ITorneoService torneoService )
         {
-            _jugadorService = jugadorService;
+            _torneoService = torneoService;
         }
 
-        //CREATE JUGADOR:
+        //CREATE TORNEO:
         [HttpPost]
-        [Route("/crearJugador")]
-        public async Task AgregarJugador(JugadorRequest nuevoJugador)
+        [Route("/crear")]
+        public async Task AgregarTorneo(TorneoRequest nuevoTorneo)
         {
-            await _jugadorService.AgregarJugador(nuevoJugador);
+            await _torneoService.AgregarTorneo(nuevoTorneo);
 
         }
 
 
-        //READ JUGADOR:
+        //READ TORNEO:
         [HttpGet]
-        [Route("/obtenerJugador/{id}")]
+        [Route("/obtener/{id}")]
         //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(<Jugador>), (int)HttpStatusCode.OK)]
-        public async Task <IActionResult> BuscarJugador(int id)
+        //[ProducesResponseType(typeof(<Torneo>), (int)HttpStatusCode.OK)]
+        public async Task <IActionResult> BuscarTorneo(int id)
         {
-            var jugador = await _jugadorService.BuscarJugador(id);
-            return Ok(jugador);
+            var torneo = await _torneoService.BuscarTorneo(id);
+            return Ok(torneo);
 
         }
 
-        //UPDATE JUGADOR:
+        //UPDATE TORNEO:
         [HttpPut]
-        [Route("/actualizarJugador/{id}")]
-        public async Task ActualizarJugador(int id,JugadorRequest nuevoJugador)
+        [Route("/actualizar/{id}")]
+        public async Task ActualizarTorneo(int id,TorneoRequest nuevoTorneo)
         {
-            await _jugadorService.ActualizarJugador(id, nuevoJugador);
+            await _torneoService.ActualizarTorneo(id, nuevoTorneo);
         }
 
-        //DELETE JUGADOR:
+        //DELETE TORNEO:
         [HttpPut]
-        [Route("/eliminarJugador/{id}")]
-        public async Task EliminarJugador(int id)
+        [Route("/eliminar/{id}")]
+        public async Task EliminarTorneo(int id)
         {
-            await _jugadorService.EliminarJugador(id);
+            await _torneoService.EliminarTorneo(id);
         }
 
-        //READ TODOS LOS JUGADORES:
+        //READ TODOS LOS TORNEOES:
         [HttpGet]
-        [Route("/obtenerTodosLosJugadores")]
+        [Route("/obtenerTodos")]
         //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(<Jugador>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> BuscarJugadores()
+        //[ProducesResponseType(typeof(<Torneo>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> BuscarTorneos()
         {
-            var jugador = await _jugadorService.BuscarJugadores();
-            return Ok(jugador);
+            var torneo = await _torneoService.BuscarTorneos();
+            return Ok(torneo);
 
         }
 
 
-        //IActionResult Post([FromBody] JugadorRequest jugadorRequest)
+        //IActionResult Post([FromBody] TorneoRequest torneoRequest)
 
 
 

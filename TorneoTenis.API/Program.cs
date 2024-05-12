@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTorneoTenisDbConfiguration();
 
 builder.Services.AddScoped<IJugadorService, JugadorService>();
+builder.Services.AddScoped<ITorneoService, TorneoService>();
 
 var app = builder.Build();
 

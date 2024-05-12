@@ -1,3 +1,4 @@
+IDEAS:
 + relatos graciosos dependiendo del nivel de suerte o habilidad que tuvo cada partido y torneo
 + el tipo de cancha influye sobre la eleccion de ganador dependiendo de sus habilidades
 + cada partido jugado aumenta las habilidades de cada jugador
@@ -10,4 +11,10 @@ CRUD       CRUD      CRUD
 PREGUNTAS:
 mappers
 donde agregar servicios auxiliares (buscar jugador by id)
-donde logica para validar genero 
+donde logica para validar genero
+cambio en entidades -> migracion?
+
+
+TO DO:
+definir parametros de busqueda en crud's (ej nombre y apellido) y modificarlo
+definir delete (eliminado) y posible metodo "recuperar registro"
