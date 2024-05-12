@@ -5,3 +5,9 @@
 
 JUGADOR -> TORNEO -> PARTIDO
 CRUD       CRUD      CRUD
+
+
+PREGUNTAS:
+mappers
+donde agregar servicios auxiliares (buscar jugador by id)
+donde logica para validar genero 
