@@ -24,7 +24,22 @@ namespace TorneoTenis.API.Mappers
             };
         }
 
-        public static Jugador UpdateJugador(this Jugador jugadorExistente, JugadorRequest jugadorRequest)
+        public static JugadorResponse ToJugadorResponse(this Jugador jugador)
+        {
+            return new JugadorResponse
+            {
+                Nombre = jugador.Nombre,
+                Apellido = jugador.Apellido,
+                Habilidad = jugador.Habilidad,
+                Fuerza = jugador.Fuerza,
+                Velocidad = jugador.Velocidad,
+                Reaccion = jugador.Reaccion,
+                EsHombre = jugador.EsHombre
+
+            };
+        }
+
+        public static Jugador ToJugadorUpdate(this Jugador jugadorExistente, JugadorRequest jugadorRequest)
         {
             jugadorExistente.Nombre = jugadorRequest.Nombre;
             jugadorExistente.Apellido = jugadorRequest.Apellido;
@@ -37,7 +52,7 @@ namespace TorneoTenis.API.Mappers
             return jugadorExistente;
         }
 
-        public static Jugador DeleteJugador(this Jugador jugadorExistente)
+        public static Jugador ToJugadorDelete(this Jugador jugadorExistente)
         {
             jugadorExistente.Eliminado = true;
 

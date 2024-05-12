@@ -21,7 +21,7 @@ namespace TorneoTenis.API.Controllers
 
         //CREATE JUGADOR:
         [HttpPost]
-        [Route("")]
+        [Route("/crear")]
         public async Task AgregarJugador(JugadorRequest nuevoJugador)
         {
             await _jugadorService.AgregarJugador(nuevoJugador);
@@ -31,7 +31,7 @@ namespace TorneoTenis.API.Controllers
 
         //READ JUGADOR:
         [HttpGet]
-        [Route("/{id}")]
+        [Route("/obtener/{id}")]
         //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
         //[ProducesResponseType(typeof(<Jugador>), (int)HttpStatusCode.OK)]
         public async Task <IActionResult> BuscarJugador(int id)
@@ -43,7 +43,7 @@ namespace TorneoTenis.API.Controllers
 
         //UPDATE JUGADOR:
         [HttpPut]
-        [Route("/{id}")]
+        [Route("/actualizar/{id}")]
         public async Task ActualizarJugador(int id,JugadorRequest nuevoJugador)
         {
             await _jugadorService.ActualizarJugador(id, nuevoJugador);
@@ -51,10 +51,22 @@ namespace TorneoTenis.API.Controllers
 
         //DELETE JUGADOR:
         [HttpPut]
-        [Route("/delete/{id}")]
+        [Route("/eliminar/{id}")]
         public async Task EliminarJugador(int id)
         {
             await _jugadorService.EliminarJugador(id);
+        }
+
+        //READ TODOS LOS JUGADORES:
+        [HttpGet]
+        [Route("/obtenerTodos")]
+        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //[ProducesResponseType(typeof(<Jugador>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> BuscarJugadores()
+        {
+            var jugador = await _jugadorService.BuscarJugadores();
+            return Ok(jugador);
+
         }
 
 

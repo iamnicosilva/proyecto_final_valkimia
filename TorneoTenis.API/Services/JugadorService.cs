@@ -35,7 +35,7 @@ namespace TorneoTenis.API.Services
         }
 
 
-        public async Task<Jugador> BuscarJugador(int id)
+        public async Task<JugadorResponse> BuscarJugador(int id)
         {
 
             // ESTO SE DEBE PASAR A UN SERVICIO BUSCAR_JUGADOR_POR_ID:
@@ -47,8 +47,9 @@ namespace TorneoTenis.API.Services
                 throw new Exception("El jugador no se encuentra");
             // fin
 
+            var response = JugadorEspecífico.ToJugadorResponse();
 
-            return JugadorEspecífico;
+            return response;
             
         }
 
@@ -64,7 +65,7 @@ namespace TorneoTenis.API.Services
                 throw new Exception("El jugador no se encuentra");
             }
 
-            jugadorExistente.UpdateJugador(JugadorActualizado);
+            jugadorExistente.ToJugadorUpdate(JugadorActualizado);
 
             await _torneoTenisContext.SaveChangesAsync();
         }
@@ -80,9 +81,22 @@ namespace TorneoTenis.API.Services
                 throw new Exception("El jugador no se encuentra");
             }
 
-            jugadorExistente.DeleteJugador();
+            jugadorExistente.ToJugadorDelete();
 
             await _torneoTenisContext.SaveChangesAsync();
+        }
+
+
+        public async Task<List<JugadorResponse>> BuscarJugadores()
+        {
+
+            var Jugadores = await _torneoTenisContext.Set<Jugador>()
+                                            .Where(a =>a.Eliminado == false).ToListAsync();
+
+            var response = Jugadores.Select(j => j.ToJugadorResponse()).ToList();
+            
+            return response;
+
         }
 
 

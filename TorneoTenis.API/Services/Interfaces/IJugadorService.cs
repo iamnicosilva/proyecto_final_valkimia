@@ -8,8 +8,9 @@ namespace TorneoTenis.API.Services.Interfaces
     {
         //Task<IEnumerable<AlumnoWithMateriasResponse>> GetAllAlumnosWithMaterias(int idAula);
         Task AgregarJugador(JugadorRequest nuevoJugador);
-        Task <Jugador> BuscarJugador(int id);
+        Task <JugadorResponse> BuscarJugador(int id);
         Task ActualizarJugador(int id, JugadorRequest JugadorActualizado);
         Task EliminarJugador(int id);
+        Task <List<JugadorResponse>> BuscarJugadores();
     }
 }
