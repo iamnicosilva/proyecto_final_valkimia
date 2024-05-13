@@ -5,7 +5,7 @@ dotnet ef database update
 
 IDEAS:
 + relatos graciosos dependiendo del nivel de suerte o habilidad que tuvo cada partido y torneo
-+ el tipo de cancha influye sobre la eleccion de ganador dependiendo de sus habilidades
++ el tipo de cancha (clima -> suerte) influye sobre la eleccion de ganador dependiendo de sus habilidades
 + cada partido jugado aumenta las habilidades de cada jugador
 
 
@@ -14,14 +14,16 @@ mappers
 donde agregar servicios auxiliares (buscar jugador by id)
 donde logica para validar genero
 cambio en entidades -> migracion?
+definir delete (eliminado) y posible metodo "recuperar registro"
+
 
 
 TO DO:
 definir parametros de busqueda en crud's (ej nombre y apellido) y modificarlo
-definir delete (eliminado) y posible metodo "recuperar registro"
 logica de simulacion
 handlers
 middlewares y filtros
+dividir endpoint para crear hombre o mujer
 
 
 JUGADOR -> TORNEO -> PARTIDO
