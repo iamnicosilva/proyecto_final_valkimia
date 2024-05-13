@@ -15,6 +15,7 @@ builder.Services.AddTorneoTenisDbConfiguration();
 
 builder.Services.AddScoped<IJugadorService, JugadorService>();
 builder.Services.AddScoped<ITorneoService, TorneoService>();
+builder.Services.AddScoped<IPartidoService, PartidoService>();
 
 var app = builder.Build();
 

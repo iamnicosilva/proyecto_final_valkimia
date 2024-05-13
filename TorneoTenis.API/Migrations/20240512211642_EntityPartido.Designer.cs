@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TorneoTenis.API.Repository;
 
@@ -11,9 +12,11 @@ using TorneoTenis.API.Repository;
 namespace TorneoTenis.API.Migrations
 {
     [DbContext(typeof(TorneoTenisContext))]
-    partial class TorneoTenisContextModelSnapshot : ModelSnapshot
+    [Migration("20240512211642_EntityPartido")]
+    partial class EntityPartido
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,7 +115,7 @@ namespace TorneoTenis.API.Migrations
                         .HasColumnName("Etapa");
 
                     b.Property<DateOnly>("Fecha")
-                        .HasMaxLength(100)
+                        .HasMaxLength(20)
                         .HasColumnType("date")
                         .HasColumnName("Fecha");
 

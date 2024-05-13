@@ -1,11 +1,12 @@
+COMANDOS:
+dotnet ef migrations add NOMBRE_DE_LA_MIGRACION
+dotnet ef database update
+
+
 IDEAS:
 + relatos graciosos dependiendo del nivel de suerte o habilidad que tuvo cada partido y torneo
 + el tipo de cancha influye sobre la eleccion de ganador dependiendo de sus habilidades
 + cada partido jugado aumenta las habilidades de cada jugador
-
-
-JUGADOR -> TORNEO -> PARTIDO
-CRUD       CRUD      CRUD
 
 
 PREGUNTAS:
@@ -18,3 +19,11 @@ cambio en entidades -> migracion?
 TO DO:
 definir parametros de busqueda en crud's (ej nombre y apellido) y modificarlo
 definir delete (eliminado) y posible metodo "recuperar registro"
+logica de simulacion
+handlers
+middlewares y filtros
+
+
+JUGADOR -> TORNEO -> PARTIDO
+CRUD       CRUD      CRUD
+
