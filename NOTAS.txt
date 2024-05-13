@@ -10,11 +10,10 @@ IDEAS:
 
 
 PREGUNTAS:
-mappers
-donde agregar servicios auxiliares (buscar jugador by id)
-donde logica para validar genero
-cambio en entidades -> migracion?
-definir delete (eliminado) y posible metodo "recuperar registro"
+asignacion de id's en db
+mappers fecha utc / helper - convertidor de json a date
+donde agregar servicios auxiliares (buscar jugador by id) repository (consultas frecuentes a db)
+definir delete (eliminado) y posible metodo "recuperar registro" query filter
 
 
 

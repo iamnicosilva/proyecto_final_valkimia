@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using static TorneoTenis.API.Models.Entities.Jugador;
 using System.Reflection;
+using TorneoTenis.API.Models.Entities;
 
 namespace TorneoTenis.API.Repository
 {
@@ -17,6 +18,8 @@ namespace TorneoTenis.API.Repository
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Jugador>().HasQueryFilter(x => !x.Eliminado); //llevar esto a clase padre para que herede eliminado
+
             base.OnModelCreating(builder);
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
