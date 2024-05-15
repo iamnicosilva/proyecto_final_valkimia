@@ -12,6 +12,7 @@ namespace TorneoTenis.API.Services.Interfaces
         Task ActualizarTorneo(int id, TorneoRequest TorneoActualizado);
         Task EliminarTorneo(int id);
         Task<List<TorneoResponse>> BuscarTorneos();
-        Task AgregarTorneoCompleto(TorneoRequest nuevoTorneo, List<JugadorDTO> jugadores);
+        Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto);
+        Task AgregarTorneoCompletoTest(List<JugadorDTO> jugadores);
     }
 }

@@ -1,6 +1,7 @@
 COMANDOS:
-dotnet ef migrations add NOMBRE_DE_LA_MIGRACION
+dotnet ef migrations add act_torneogenero
 dotnet ef database update
+Script-Migration
 
 
 IDEAS:

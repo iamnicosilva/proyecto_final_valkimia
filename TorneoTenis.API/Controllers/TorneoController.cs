@@ -76,9 +76,22 @@ namespace TorneoTenis.API.Controllers
         //AUTOCOMPLETAR TORNEO (TOMA LOS JUGADORES Y TE ARMA TODO)
         [HttpPost]
         [Route("/crearTorneoCompleto")]
-        public async Task AgregarTorneoCompleto(TorneoRequest nuevoTorneo, [FromBody] List<JugadorDTO> jugadores)
+        public async Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto)
         {
-            await _torneoService.AgregarTorneoCompleto(nuevoTorneo,jugadores);
+            await _torneoService.AgregarTorneoCompleto(torneoCompleto);
+
+        }
+
+
+
+
+
+        [HttpPost]
+        [Route("/crearTorneoCompletoTest")]
+        public async Task AgregarTorneoCompletoTest(List<JugadorDTO> jugadores)
+        {
+            await _torneoService.AgregarTorneoCompletoTest(jugadores);
+
 
         }
 

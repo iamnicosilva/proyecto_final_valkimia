@@ -34,9 +34,9 @@ namespace TorneoTenis.API.Models.Entities
                 builder.Property(x => x.IdPerdedor).HasColumnName("Perdedor").IsRequired();
                 builder.Property(x => x.IdTorneo).HasColumnName("Torneo").IsRequired();
 
-                builder.HasOne(x => x.ganador).WithMany().HasForeignKey(x => x.IdGanador).IsRequired();
-                builder.HasOne(x => x.perdedor).WithMany().HasForeignKey(x => x.IdPerdedor).IsRequired();
-                builder.HasOne(x => x.torneo).WithMany().HasForeignKey(x => x.IdTorneo).IsRequired();
+                builder.HasOne(x => x.ganador).WithMany().HasForeignKey(x => x.IdGanador).OnDelete(DeleteBehavior.NoAction);
+                builder.HasOne(x => x.perdedor).WithMany().HasForeignKey(x => x.IdPerdedor).OnDelete(DeleteBehavior.NoAction);
+                builder.HasOne(x => x.torneo).WithMany().HasForeignKey(x => x.IdTorneo);
 
 
 

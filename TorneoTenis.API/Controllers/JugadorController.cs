@@ -31,12 +31,12 @@ namespace TorneoTenis.API.Controllers
 
         //READ JUGADOR:
         [HttpGet]
-        [Route("/obtenerJugador/{id}")]
+        [Route("/obtenerJugador/{nombre,apellido}")]
         //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
         //[ProducesResponseType(typeof(<Jugador>), (int)HttpStatusCode.OK)]
-        public async Task <IActionResult> BuscarJugador(int id)
+        public async Task <IActionResult> BuscarJugador(string nombre, string apellido)
         {
-            var jugador = await _jugadorService.BuscarJugador(id);
+            var jugador = await _jugadorService.BuscarJugador(nombre , apellido);
             return Ok(jugador);
 
         }

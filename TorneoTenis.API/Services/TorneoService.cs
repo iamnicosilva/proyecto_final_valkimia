@@ -6,6 +6,7 @@ using TorneoTenis.API.Models.Response;
 using TorneoTenis.API.Repository;
 using TorneoTenis.API.Services.Interfaces;
 using TorneoTenis.API.Models.Response.DTO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TorneoTenis.API.Services
 {
@@ -100,28 +101,96 @@ namespace TorneoTenis.API.Services
 
         }
 
-        public async Task AgregarTorneoCompleto(TorneoRequest nuevoTorneo, List<JugadorDTO> jugadores)
+        public async Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto)
         {
             var potencialTorneoDuplicado = await _torneoTenisContext.Set<Torneo>()
-                                            .Where(a => a.Nombre == nuevoTorneo.Nombre)
-                                            .Where(a => a.Anio == nuevoTorneo.Anio)
+                                            .Where(a => a.Nombre == torneoCompleto.NuevoTorneo.Nombre)
+                                            .Where(a => a.Anio == torneoCompleto.NuevoTorneo.Anio)
                                             .FirstOrDefaultAsync();
 
 
             if (potencialTorneoDuplicado != null)
                 throw new Exception("Este Torneo ya esta registrado");
 
-            Console.WriteLine(jugadores);
-
-            var nuevoTorneoAAgregar = nuevoTorneo.ToTorneo();
+            var nuevoTorneoAAgregar = torneoCompleto.ToTorneoCompleto();
 
             _torneoTenisContext.Add(nuevoTorneoAAgregar);
 
             await _torneoTenisContext.SaveChangesAsync();
+
+            var Torneo = await _torneoTenisContext.Set<Torneo>()
+                                            .Where(a => a.Nombre == torneoCompleto.NuevoTorneo.Nombre)
+                                            .Where(a => a.Anio == torneoCompleto.NuevoTorneo.Anio)
+                                            .FirstOrDefaultAsync();
+            var IdTorneo = Torneo.Id;
+
+
+            var jugadorService = new JugadorService(_torneoTenisContext);
+            var partidoService = new PartidoService(_torneoTenisContext);
+
+            List<Jugador> JugadoresDelTorneo = new List<Jugador>();
+
+            var Count = 0;
+
+            foreach (var i in torneoCompleto.Jugadores)
+            {
+                Count += 1;
+                var JugadorEspecífico = await _torneoTenisContext.Set<Jugador>()
+                                    .Where(a => a.Nombre == i.Nombre && a.Apellido == i.Apellido)
+                                    .FirstOrDefaultAsync();
+
+                JugadoresDelTorneo.Add(JugadorEspecífico);
+
+
+            }
+
+            partidoService.AgregarPartido(new PartidoRequest
+            {
+                Etapa = 3,
+                Anio = 2024,
+                Mes = 1,
+                Dia = 2,
+                IdGanador = 2,
+                IdPerdedor = 1,
+                IdTorneo = IdTorneo,
+                DescripcionGanador = "string"
+            });
+
+            
+
+            //    "etapa": 1,
+            //      "anio": 2024,
+            //      "mes": 0,
+            //      "dia": 0,
+            //      "idGanador": 0,
+            //      "idPerdedor": 0,
+            //      "idTorneo": 0,
+            //      "descripcionGanador": "string"
+            //});
+
+            //Etapa = 1;
+            //{
+
+            //    }
+
+
+
+            Console.WriteLine(torneoCompleto.Jugadores[0].Nombre);
+            Console.WriteLine(torneoCompleto.Jugadores[0].Apellido);
+            Console.WriteLine(torneoCompleto.Jugadores[1].Nombre);
+            Console.WriteLine(torneoCompleto.Jugadores[1].Apellido);
+
         }
 
 
+        public async Task AgregarTorneoCompletoTest(List<JugadorDTO> jugadores)
+        { 
 
+            Console.WriteLine("hola");
+
+
+            await _torneoTenisContext.SaveChangesAsync();
+        }
 
 
 

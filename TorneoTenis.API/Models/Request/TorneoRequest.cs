@@ -4,12 +4,8 @@
     {
         public string Nombre { get; set; }
         public int Anio { get; set; }
-
-        public IdJugador1 {get; set; }
-    }
-
-    public class TorneoCompletoRequest
-    {
+        public bool EsTorneoMasculino {  get; set; }
 
     }
+
 }

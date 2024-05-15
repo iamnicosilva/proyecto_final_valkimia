@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TorneoTenis.API.Migrations
 {
     /// <inheritdoc />
-    public partial class PrimerMigracion : Migration
+    public partial class act_torneogenero : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,7 +38,9 @@ namespace TorneoTenis.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Año = table.Column<int>(type: "int", maxLength: 4, nullable: false)
+                    Año = table.Column<int>(type: "int", maxLength: 4, nullable: false),
+                    EsTorneoMasculino = table.Column<bool>(name: "Es Torneo Masculino", type: "bit", nullable: false),
+                    Eliminado = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -52,11 +54,12 @@ namespace TorneoTenis.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Etapa = table.Column<int>(type: "int", maxLength: 2, nullable: false),
-                    Fecha = table.Column<DateOnly>(type: "date", maxLength: 20, nullable: false),
+                    Fecha = table.Column<DateOnly>(type: "date", maxLength: 100, nullable: false),
                     DescripcionGanador = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ganador = table.Column<int>(type: "int", nullable: false),
                     Perdedor = table.Column<int>(type: "int", nullable: false),
-                    Torneo = table.Column<int>(type: "int", nullable: false)
+                    Torneo = table.Column<int>(type: "int", nullable: false),
+                    Eliminado = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -65,14 +68,12 @@ namespace TorneoTenis.API.Migrations
                         name: "FK_Partido_Jugador_Ganador",
                         column: x => x.Ganador,
                         principalTable: "Jugador",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Partido_Jugador_Perdedor",
                         column: x => x.Perdedor,
                         principalTable: "Jugador",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Partido_Torneo_Torneo",
                         column: x => x.Torneo,

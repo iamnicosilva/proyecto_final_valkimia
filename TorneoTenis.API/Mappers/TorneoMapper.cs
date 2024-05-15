@@ -19,6 +19,17 @@ namespace TorneoTenis.API.Mappers
             };
         }
 
+        public static Torneo ToTorneoCompleto(this TorneoCompletoRequest torneoRequest)
+        {
+            return new Torneo
+            {
+                Nombre = torneoRequest.NuevoTorneo.Nombre,
+                Anio = torneoRequest.NuevoTorneo.Anio,
+                EsTorneoMasculino = torneoRequest.NuevoTorneo.EsTorneoMasculino
+
+            };
+        }
+
 
 
 

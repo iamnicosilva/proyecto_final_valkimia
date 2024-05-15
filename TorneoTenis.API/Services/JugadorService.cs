@@ -35,13 +35,15 @@ namespace TorneoTenis.API.Services
         }
 
 
-        public async Task<JugadorResponse> BuscarJugador(int id)
+        public async Task<JugadorResponse> BuscarJugador(string nombre, string apellido)
         {
 
             // ESTO SE DEBE PASAR A UN SERVICIO BUSCAR_JUGADOR_POR_ID:
 
             var JugadorEspecífico = await _torneoTenisContext.Set<Jugador>()
-                                    .Where(a =>a.Id == id).FirstOrDefaultAsync();
+                                    .Where(a => a.Nombre == nombre && a.Apellido == apellido)
+                                    .FirstOrDefaultAsync();
+
 
             if (JugadorEspecífico == null || JugadorEspecífico.Eliminado) 
                 throw new Exception("El jugador no se encuentra");

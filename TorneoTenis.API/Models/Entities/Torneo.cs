@@ -22,6 +22,7 @@ namespace TorneoTenis.API.Models.Entities
                 builder.Property(x => x.Id).HasColumnName("Id").ValueGeneratedOnAdd().IsRequired();
                 builder.Property(x => x.Nombre).HasColumnName("Nombre").HasMaxLength(100).IsRequired();
                 builder.Property(x => x.Anio).HasColumnName("Año").HasMaxLength(4).IsRequired();
+                builder.Property(x => x.EsTorneoMasculino).HasColumnName("Es Torneo Masculino").IsRequired();
                 builder.Property(x => x.Eliminado).HasColumnName("Eliminado").HasDefaultValue(false).IsRequired();
 
 

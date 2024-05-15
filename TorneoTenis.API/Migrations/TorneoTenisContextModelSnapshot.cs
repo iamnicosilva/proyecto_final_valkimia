@@ -159,6 +159,10 @@ namespace TorneoTenis.API.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("Eliminado");
 
+                    b.Property<bool>("EsTorneoMasculino")
+                        .HasColumnType("bit")
+                        .HasColumnName("Es Torneo Masculino");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -175,13 +179,13 @@ namespace TorneoTenis.API.Migrations
                     b.HasOne("TorneoTenis.API.Models.Entities.Jugador", "ganador")
                         .WithMany()
                         .HasForeignKey("IdGanador")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TorneoTenis.API.Models.Entities.Jugador", "perdedor")
                         .WithMany()
                         .HasForeignKey("IdPerdedor")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TorneoTenis.API.Models.Entities.Torneo", "torneo")
