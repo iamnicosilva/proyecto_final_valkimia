@@ -14,7 +14,7 @@ namespace TorneoTenis.API.Controllers
     {
         private readonly IPartidoService _partidoService;
 
-        public PartidoController( IPartidoService partidoService )
+        public PartidoController(IPartidoService partidoService)
         {
             _partidoService = partidoService;
         }
@@ -34,7 +34,7 @@ namespace TorneoTenis.API.Controllers
         [Route("/obtenerPartido/{id}")]
         //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
         //[ProducesResponseType(typeof(<Partido>), (int)HttpStatusCode.OK)]
-        public async Task <IActionResult> BuscarPartido(int id)
+        public async Task<IActionResult> BuscarPartido(int id)
         {
             var partido = await _partidoService.BuscarPartido(id);
             return Ok(partido);
@@ -44,7 +44,7 @@ namespace TorneoTenis.API.Controllers
         //UPDATE PARTIDO:
         [HttpPut]
         [Route("/actualizarPartido/{id}")]
-        public async Task ActualizarPartido(int id,PartidoRequest nuevoPartido)
+        public async Task ActualizarPartido(int id, PartidoRequest nuevoPartido)
         {
             await _partidoService.ActualizarPartido(id, nuevoPartido);
         }
@@ -69,71 +69,4 @@ namespace TorneoTenis.API.Controllers
 
         }
 
-
-        //IActionResult Post([FromBody] PartidoRequest partidoRequest)
-
-
-
-
-
-
-
-
-
-
-
-
-        //[HttpGet]
-        //[Route("GetAllDocentesWithMaterias/{materia}")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(List<DocenteWithMateriaResponse>),(int)HttpStatusCode.OK)]
-        //public IActionResult GetAllDocentesWithMaterias(string materia)
-        //{
-        //    return Ok();
-        //}
-
-
-
-
-        //[HttpGet]
-        //[Route("Persona/{id}")]
-        //public IActionResult Get(int id)
-        //{
-        //    // TRAER UN ALUMNO ESPECIFICO DE LA DB
-        //    //var AlumnoEspecifico = ListaAlumnos.FirstOrDefault(a => a.Id == id);
-
-        //    return Ok();
-        //}
-
-
-
-
-        //[HttpPut]
-        //[Route("Alumno/{id}")]
-        //public IActionResult Put(int id, [FromBody] PersonaRequest alumnoRequest)
-        //{
-        //    //BUSCAR EN LA DB EL ALUMNO ESPECIFICO Y ACTUALIZAR SUS DATOS
-
-        //    var AlumnoEspecifico = ListaAlumnos.FirstOrDefault(a => a.Id == id);
-
-        //    AlumnoEspecifico.Nombre = alumnoRequest.Nombre;
-        //    AlumnoEspecifico.Apellido = alumnoRequest.Apellido;
-        //    AlumnoEspecifico.DNI = alumnoRequest.DNI;
-
-        //    return Ok(ListaAlumnos);
-        //}
-
-        //[HttpDelete]
-        //[Route("Alumno/{id}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    //BUSCAR EN LA DB EL ALUMNO ESPECIFICO Y ELIMINARLO (CAMBIAR A TRUE SU ATRIBUTO ELIMINADO)
-
-        //    var AlumnoEspecifico = ListaAlumnos.FirstOrDefault(a => a.Id == id);
-
-        //    AlumnoEspecifico.Eliminado = true;
-
-        //    return Ok(ListaAlumnos);
-        //}
     }
-}

@@ -10,10 +10,10 @@ IDEAS:
 
 
 PREGUNTAS:
-asignacion de id's en db
-mappers fecha utc / helper - convertidor de json a date
-donde agregar servicios auxiliares (buscar jugador by id) repository (consultas frecuentes a db)
-definir delete (eliminado) y posible metodo "recuperar registro" query filter
+asignacion de id's en db -> dejarlo asi
+mappers -> fecha utc / helper - convertidor de json a date
+donde agregar servicios auxiliares (buscar jugador by id) -> repository (consultas frecuentes a db)
+definir delete (eliminado) y posible metodo "recuperar registro" query filter -> seguimos con soft delete
 
 
 
@@ -23,6 +23,7 @@ logica de simulacion
 handlers
 middlewares y filtros
 dividir endpoint para crear hombre o mujer
+implementar recuperar registro (soft delete)
 
 
 JUGADOR -> TORNEO -> PARTIDO
