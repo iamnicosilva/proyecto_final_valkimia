@@ -8,6 +8,7 @@ IDEAS:
 + relatos graciosos dependiendo del nivel de suerte o habilidad que tuvo cada partido y torneo
 + el tipo de cancha (clima -> suerte) influye sobre la eleccion de ganador dependiendo de sus habilidades
 + cada partido jugado aumenta las habilidades de cada jugador
++ created at / updated at (facil implementacion)
 
 
 PREGUNTAS:
@@ -19,7 +20,7 @@ definir delete (eliminado) y posible metodo "recuperar registro" query filter ->
 
 
 TO DO:
-definir parametros de busqueda en crud's (ej nombre y apellido) y modificarlo
+definir parametros de busqueda en crud's (ej nombre y apellido) y modificarlo (BuscarJugador HECHO)
 logica de simulacion
 handlers
 middlewares y filtros

@@ -86,14 +86,6 @@ namespace TorneoTenis.API.Controllers
 
 
 
-        [HttpPost]
-        [Route("/crearTorneoCompletoTest")]
-        public async Task AgregarTorneoCompletoTest(List<JugadorDTO> jugadores)
-        {
-            await _torneoService.AgregarTorneoCompletoTest(jugadores);
-
-
-        }
 
 
         //AGREGAR ENDPOINTS CON CONSULTAS VARIAS (TORNEO POR AÑO, POR JUGADOR, POR TIPO DE TORNEO, ETC)

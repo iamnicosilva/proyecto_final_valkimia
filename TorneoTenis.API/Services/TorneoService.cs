@@ -167,14 +167,6 @@ namespace TorneoTenis.API.Services
         }
 
 
-        public async Task AgregarTorneoCompletoTest(List<JugadorDTO> jugadores)
-        { 
-
-            Console.WriteLine("hola");
-
-
-            await _torneoTenisContext.SaveChangesAsync();
-        }
 
 
 
