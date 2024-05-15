@@ -7,6 +7,8 @@ using TorneoTenis.API.Repository;
 using TorneoTenis.API.Services.Interfaces;
 using TorneoTenis.API.Models.Response.DTO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.EntityFrameworkCore.Storage.Json;
+using TorneoTenis.API.Services.Auxiliares;
 
 namespace TorneoTenis.API.Services
 {
@@ -131,6 +133,7 @@ namespace TorneoTenis.API.Services
             List<Jugador> JugadoresDelTorneo = new List<Jugador>();
 
             var Count = 0;
+            var fechaActual = DateTime.Now;
 
             foreach (var i in torneoCompleto.Jugadores)
             {
@@ -144,41 +147,22 @@ namespace TorneoTenis.API.Services
 
             }
 
-            partidoService.AgregarPartido(new PartidoRequest
+            var GanadorYPerdedor = ElegirGanadorAuxiliar.ElegirGanador(JugadoresDelTorneo[0], JugadoresDelTorneo[1]);
+
+
+            await partidoService.AgregarPartido(new PartidoRequest
             {
-                Etapa = 3,
-                Anio = 2024,
-                Mes = 1,
-                Dia = 2,
-                IdGanador = 2,
-                IdPerdedor = 1,
+                Etapa = 99,
+                Anio = fechaActual.Year,
+                Mes = fechaActual.Month,
+                Dia = fechaActual.Day,
+                IdGanador = GanadorYPerdedor.ganador.Id,
+                IdPerdedor = GanadorYPerdedor.perdedor.Id,
                 IdTorneo = IdTorneo,
                 DescripcionGanador = "string"
             });
 
-            
 
-            //    "etapa": 1,
-            //      "anio": 2024,
-            //      "mes": 0,
-            //      "dia": 0,
-            //      "idGanador": 0,
-            //      "idPerdedor": 0,
-            //      "idTorneo": 0,
-            //      "descripcionGanador": "string"
-            //});
-
-            //Etapa = 1;
-            //{
-
-            //    }
-
-
-
-            Console.WriteLine(torneoCompleto.Jugadores[0].Nombre);
-            Console.WriteLine(torneoCompleto.Jugadores[0].Apellido);
-            Console.WriteLine(torneoCompleto.Jugadores[1].Nombre);
-            Console.WriteLine(torneoCompleto.Jugadores[1].Apellido);
 
         }
 

@@ -55,5 +55,13 @@ namespace TorneoTenis.API.Mappers
 
             return partidoExistente;
         }
+
+        //public static PartidoRequest ToPartidoAutonomo(partido)
+        //{
+        //    return new PartidoRequest()
+        //    {
+
+        //    };
+        //}
     }
 }

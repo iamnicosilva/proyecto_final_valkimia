@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Repository\NewFolder\" />
-    <Folder Include="Services\Auxiliares\" />
   </ItemGroup>
 
 </Project>
