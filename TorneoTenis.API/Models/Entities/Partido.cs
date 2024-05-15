@@ -6,7 +6,7 @@ namespace TorneoTenis.API.Models.Entities
     public class Partido
     {
         public int Id { get; set; }
-        public int Etapa { get; set; }
+        public int Etapa { get; set; } 
         public DateOnly Fecha { get; set; }
         public string DescripcionGanador { get; set; }
         public int IdGanador { get; set; }

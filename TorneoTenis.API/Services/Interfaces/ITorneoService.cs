@@ -1,5 +1,7 @@
-﻿using TorneoTenis.API.Models.Request;
+﻿using TorneoTenis.API.Models.Entities;
+using TorneoTenis.API.Models.Request;
 using TorneoTenis.API.Models.Response;
+using TorneoTenis.API.Models.Response.DTO;
 
 namespace TorneoTenis.API.Services.Interfaces
 {
@@ -10,5 +12,6 @@ namespace TorneoTenis.API.Services.Interfaces
         Task ActualizarTorneo(int id, TorneoRequest TorneoActualizado);
         Task EliminarTorneo(int id);
         Task<List<TorneoResponse>> BuscarTorneos();
+        Task AgregarTorneoCompleto(TorneoRequest nuevoTorneo, List<JugadorDTO> jugadores);
     }
 }

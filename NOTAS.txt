@@ -23,9 +23,27 @@ logica de simulacion
 handlers
 middlewares y filtros
 dividir endpoint para crear hombre o mujer
-implementar recuperar registro (soft delete)
+dejar preparados endpoints con diversas consultas
+
+ENDPOINTS A CONSTRUIR:
+-autocompletar torneo
+inputs: cantidad de jugadores, 
+validaciones: cantidad de jugadores
+
+-historial de jugador
+
+-torneos por año
+
+-torneos por genero
+
+
+
+
 
 
 JUGADOR -> TORNEO -> PARTIDO
 CRUD       CRUD      CRUD
 
+final  semi    cuarto     octavo
+
+  1    2.3   4.5.6.7      8.9.1.11.12.13.14.15

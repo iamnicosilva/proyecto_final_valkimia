@@ -9,7 +9,10 @@ namespace TorneoTenis.API.Models.Entities
         public int Id { get; set; }
         public string Nombre { get; set; }
         public int Anio { get; set; }
+        public bool EsTorneoMasculino { get; set; }
         public bool Eliminado { get; set; }
+        //public int TipoCancha { get; set; }
+
         public class TorneoConfig : IEntityTypeConfiguration<Torneo>
         {
             public void Configure(EntityTypeBuilder<Torneo> builder)

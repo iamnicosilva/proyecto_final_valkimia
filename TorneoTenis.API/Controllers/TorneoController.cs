@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TorneoTenis.API.Services.Interfaces;
+using TorneoTenis.API.Models.Response.DTO;
 
 namespace TorneoTenis.API.Controllers
 {
@@ -72,8 +73,17 @@ namespace TorneoTenis.API.Controllers
 
         //IActionResult Post([FromBody] TorneoRequest torneoRequest)
 
+        //AUTOCOMPLETAR TORNEO (TOMA LOS JUGADORES Y TE ARMA TODO)
+        [HttpPost]
+        [Route("/crearTorneoCompleto")]
+        public async Task AgregarTorneoCompleto(TorneoRequest nuevoTorneo, [FromBody] List<JugadorDTO> jugadores)
+        {
+            await _torneoService.AgregarTorneoCompleto(nuevoTorneo,jugadores);
+
+        }
 
 
+        //AGREGAR ENDPOINTS CON CONSULTAS VARIAS (TORNEO POR AÑO, POR JUGADOR, POR TIPO DE TORNEO, ETC)
 
 
 

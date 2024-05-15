@@ -19,6 +19,9 @@ namespace TorneoTenis.API.Mappers
             };
         }
 
+
+
+
         public static TorneoResponse ToTorneoResponse(this Torneo torneo)
         {
             return new TorneoResponse

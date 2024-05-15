@@ -5,6 +5,7 @@ using TorneoTenis.API.Models.Request;
 using TorneoTenis.API.Models.Response;
 using TorneoTenis.API.Repository;
 using TorneoTenis.API.Services.Interfaces;
+using TorneoTenis.API.Models.Response.DTO;
 
 namespace TorneoTenis.API.Services
 {
@@ -97,6 +98,26 @@ namespace TorneoTenis.API.Services
             
             return response;
 
+        }
+
+        public async Task AgregarTorneoCompleto(TorneoRequest nuevoTorneo, List<JugadorDTO> jugadores)
+        {
+            var potencialTorneoDuplicado = await _torneoTenisContext.Set<Torneo>()
+                                            .Where(a => a.Nombre == nuevoTorneo.Nombre)
+                                            .Where(a => a.Anio == nuevoTorneo.Anio)
+                                            .FirstOrDefaultAsync();
+
+
+            if (potencialTorneoDuplicado != null)
+                throw new Exception("Este Torneo ya esta registrado");
+
+            Console.WriteLine(jugadores);
+
+            var nuevoTorneoAAgregar = nuevoTorneo.ToTorneo();
+
+            _torneoTenisContext.Add(nuevoTorneoAAgregar);
+
+            await _torneoTenisContext.SaveChangesAsync();
         }
 
 
