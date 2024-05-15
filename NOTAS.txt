@@ -1,3 +1,6 @@
+" Se requiere que a partir de una lista de jugadroes se simule el torneo y se
+obtenga como output al ganador del mismo."
+
 COMANDOS:
 dotnet ef migrations add act_torneogenero
 dotnet ef database update

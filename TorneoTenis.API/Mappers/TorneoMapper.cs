@@ -9,7 +9,7 @@ namespace TorneoTenis.API.Mappers
 {
     public static class TorneoMapper
     {
-        public static Torneo ToTorneo(this TorneoRequest torneoRequest)
+        public static Torneo ToTorneo(this TorneoManualRequest torneoRequest)
         {
             return new Torneo
             {
@@ -19,13 +19,13 @@ namespace TorneoTenis.API.Mappers
             };
         }
 
-        public static Torneo ToTorneoCompleto(this TorneoCompletoRequest torneoRequest)
+        public static Torneo ToTorneoCompleto(this TorneoCompletoRequest torneoRequest, bool EsTorneoMasculino)
         {
             return new Torneo
             {
                 Nombre = torneoRequest.NuevoTorneo.Nombre,
                 Anio = torneoRequest.NuevoTorneo.Anio,
-                EsTorneoMasculino = torneoRequest.NuevoTorneo.EsTorneoMasculino
+                EsTorneoMasculino = EsTorneoMasculino
 
             };
         }
@@ -43,7 +43,7 @@ namespace TorneoTenis.API.Mappers
             };
         }
 
-        public static Torneo ToTorneoUpdate(this Torneo torneoExistente, TorneoRequest torneoRequest)
+        public static Torneo ToTorneoUpdate(this Torneo torneoExistente, TorneoManualRequest torneoRequest)
         {
             torneoExistente.Nombre = torneoRequest.Nombre;
             torneoExistente.Anio = torneoRequest.Anio;

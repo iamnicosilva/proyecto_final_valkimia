@@ -21,7 +21,7 @@ namespace TorneoTenis.API.Services
             _torneoTenisContext = torneoTenisContex;
         }
 
-        public async Task AgregarTorneo(TorneoRequest nuevoTorneo)
+        public async Task AgregarTorneo(TorneoManualRequest nuevoTorneo)
         {
             var potencialTorneoDuplicado = await _torneoTenisContext.Set<Torneo>()
                                             .Where(a => a.Nombre == nuevoTorneo.Nombre)
@@ -58,7 +58,7 @@ namespace TorneoTenis.API.Services
         }
 
 
-        public async Task ActualizarTorneo(int id,TorneoRequest TorneoActualizado)
+        public async Task ActualizarTorneo(int id, TorneoManualRequest TorneoActualizado)
         {
 
             var torneoExistente = await _torneoTenisContext.Set<Torneo>()
@@ -103,18 +103,19 @@ namespace TorneoTenis.API.Services
 
         }
 
-        public async Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto)
+        public async Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto, bool EsTorneoMasculino)
         {
             var potencialTorneoDuplicado = await _torneoTenisContext.Set<Torneo>()
-                                            .Where(a => a.Nombre == torneoCompleto.NuevoTorneo.Nombre)
-                                            .Where(a => a.Anio == torneoCompleto.NuevoTorneo.Anio)
+                                            .Where(a => a.Nombre == torneoCompleto.NuevoTorneo.Nombre && 
+                                            a.Anio == torneoCompleto.NuevoTorneo.Anio && 
+                                            a.EsTorneoMasculino == EsTorneoMasculino)                                            
                                             .FirstOrDefaultAsync();
 
 
             if (potencialTorneoDuplicado != null)
                 throw new Exception("Este Torneo ya esta registrado");
 
-            var nuevoTorneoAAgregar = torneoCompleto.ToTorneoCompleto();
+            var nuevoTorneoAAgregar = torneoCompleto.ToTorneoCompleto(EsTorneoMasculino);
 
             _torneoTenisContext.Add(nuevoTorneoAAgregar);
 

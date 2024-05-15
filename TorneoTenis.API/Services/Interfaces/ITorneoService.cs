@@ -7,11 +7,11 @@ namespace TorneoTenis.API.Services.Interfaces
 {
     public interface ITorneoService
     {
-        Task AgregarTorneo(TorneoRequest nuevoTorneo);
+        Task AgregarTorneo(TorneoManualRequest nuevoTorneo);
         Task<TorneoResponse> BuscarTorneo(int id);
-        Task ActualizarTorneo(int id, TorneoRequest TorneoActualizado);
+        Task ActualizarTorneo(int id, TorneoManualRequest TorneoActualizado);
         Task EliminarTorneo(int id);
         Task<List<TorneoResponse>> BuscarTorneos();
-        Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto);
+        Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto, bool EsTorneoMasculino);
     }
 }

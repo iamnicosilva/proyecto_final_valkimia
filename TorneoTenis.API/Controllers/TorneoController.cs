@@ -22,8 +22,8 @@ namespace TorneoTenis.API.Controllers
 
         //CREATE TORNEO:
         [HttpPost]
-        [Route("/crear")]
-        public async Task AgregarTorneo(TorneoRequest nuevoTorneo)
+        [Route("/crearTorneoManual")]
+        public async Task AgregarTorneo(TorneoManualRequest nuevoTorneo)
         {
             await _torneoService.AgregarTorneo(nuevoTorneo);
 
@@ -45,7 +45,7 @@ namespace TorneoTenis.API.Controllers
         //UPDATE TORNEO:
         [HttpPut]
         [Route("/actualizar/{id}")]
-        public async Task ActualizarTorneo(int id,TorneoRequest nuevoTorneo)
+        public async Task ActualizarTorneo(int id, TorneoManualRequest nuevoTorneo)
         {
             await _torneoService.ActualizarTorneo(id, nuevoTorneo);
         }
@@ -75,14 +75,20 @@ namespace TorneoTenis.API.Controllers
 
         //AUTOCOMPLETAR TORNEO (TOMA LOS JUGADORES Y TE ARMA TODO)
         [HttpPost]
-        [Route("/crearTorneoCompleto")]
-        public async Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto)
+        [Route("/crearTorneoMasculinoCompleto")]
+        public async Task AgregarTorneoMasculinoCompleto(TorneoCompletoRequest torneoCompleto)
         {
-            await _torneoService.AgregarTorneoCompleto(torneoCompleto);
+            await _torneoService.AgregarTorneoCompleto(torneoCompleto, true);
 
         }
 
+        [HttpPost]
+        [Route("/crearTorneoFemeninoCompleto")]
+        public async Task AgregarTorneoFemeninoCompleto(TorneoCompletoRequest torneoCompleto)
+        {
+            await _torneoService.AgregarTorneoCompleto(torneoCompleto, false);
 
+        }
 
 
 
