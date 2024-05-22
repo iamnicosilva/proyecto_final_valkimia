@@ -1,67 +1,63 @@
 ﻿using TorneoTenis.API.Models.Entities;
 using TorneoTenis.API.Models.Request;
 using TorneoTenis.API.Models.Response;
-using TorneoTenis.API.Models.Response.DTO;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using TorneoTenis.API.Models.DTO;
 
 
 namespace TorneoTenis.API.Mappers
 {
     public static class PartidoMapper
     {
-        public static Partido ToPartido(this PartidoRequest partidoRequest)
+        public static Partido ToPartido(this PartidoRequest partidoRequest, DateTime fecha)
         {
             return new Partido
             {
+                IdTorneo = partidoRequest.IdTorneo,
                 Etapa = partidoRequest.Etapa,
-                Fecha = new DateOnly(partidoRequest.Anio,partidoRequest.Mes,partidoRequest.Dia),
-                DescripcionGanador = partidoRequest.DescripcionGanador,
                 IdGanador = partidoRequest.IdGanador,
                 IdPerdedor = partidoRequest.IdPerdedor,
-                IdTorneo = partidoRequest.IdTorneo
+                Fecha = fecha
 
             };
         }
 
-        public static PartidoResponse ToPartidoResponse(this Partido partido)
+
+
+        public static PartidoRequest ToPartidoRequest(this int idTorneo, int etapa, int idGanador, int idPerdedor)
         {
+            return new PartidoRequest
+            {
+                IdTorneo = idTorneo,
+                Etapa = etapa,
+                IdGanador = idGanador,
+                IdPerdedor = idPerdedor
+
+            };
+        }
+
+
+        public static PartidoResponse ToPartidoResponse(this Partido partido, JugadorDTO ganador, JugadorDTO perdedor)
+        {
+
             return new PartidoResponse
             {
-                Etapa = partido.Etapa,
-                Fecha = partido.Fecha,
-                DescripcionGanador = partido.DescripcionGanador,
-                IdGanador = partido.IdGanador,
-                IdPerdedor = partido.IdPerdedor,
-                IdTorneo = partido.IdTorneo
-
+                Partido = new PartidoDTO
+                {
+                    Etapa = partido.Etapa,
+                    Fecha = partido.Fecha,
+                },
+                Ganador = new JugadorDTO
+                {
+                    Nombre = ganador.Nombre,
+                    Apellido = ganador.Apellido
+                },
+                Perdedor = new JugadorDTO
+                {
+                    Nombre = perdedor.Nombre,
+                    Apellido = perdedor.Apellido
+                }
             };
         }
 
-        public static Partido ToPartidoUpdate(this Partido partidoExistente, PartidoRequest partidoRequest)
-        {
-            partidoExistente.Etapa = partidoRequest.Etapa;
-            partidoExistente.Fecha = new DateOnly(partidoRequest.Anio, partidoRequest.Mes, partidoRequest.Dia);
-            partidoExistente.DescripcionGanador = partidoRequest.DescripcionGanador;
-            partidoExistente.IdGanador = partidoRequest.IdGanador;
-            partidoExistente.IdPerdedor = partidoRequest.IdPerdedor;
-            partidoExistente.IdTorneo = partidoRequest.IdTorneo;
-
-            return partidoExistente;
-        }
-
-        public static Partido ToPartidoDelete(this Partido partidoExistente)
-        {
-            partidoExistente.Eliminado = true;
-
-            return partidoExistente;
-        }
-
-        //public static PartidoRequest ToPartidoAutonomo(partido)
-        //{
-        //    return new PartidoRequest()
-        //    {
-
-        //    };
-        //}
     }
 }

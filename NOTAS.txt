@@ -1,54 +1,12 @@
-" Se requiere que a partir de una lista de jugadroes se simule el torneo y se
-obtenga como output al ganador del mismo."
+
+
+
+
 
 COMANDOS:
 dotnet ef migrations add act_torneogenero
 dotnet ef database update
 Script-Migration
 
+jsonconvert -> newtonsoft.json
 
-IDEAS:
-+ relatos graciosos dependiendo del nivel de suerte o habilidad que tuvo cada partido y torneo
-+ el tipo de cancha (clima -> suerte) influye sobre la eleccion de ganador dependiendo de sus habilidades
-+ cada partido jugado aumenta las habilidades de cada jugador
-+ created at / updated at (facil implementacion)
-
-
-PREGUNTAS:
-asignacion de id's en db -> dejarlo asi
-mappers -> fecha utc / helper - convertidor de json a date
-donde agregar servicios auxiliares (buscar jugador by id) -> repository (consultas frecuentes a db)
-definir delete (eliminado) y posible metodo "recuperar registro" query filter -> seguimos con soft delete
-
-
-
-TO DO:
-definir parametros de busqueda en crud's (ej nombre y apellido) y modificarlo (BuscarJugador HECHO)
-logica de simulacion
-handlers
-middlewares y filtros
-dividir endpoint para crear hombre o mujer
-dejar preparados endpoints con diversas consultas
-
-ENDPOINTS A CONSTRUIR:
--autocompletar torneo
-inputs: cantidad de jugadores, 
-validaciones: cantidad de jugadores
-
--historial de jugador
-
--torneos por año
-
--torneos por genero
-
-
-
-
-
-
-JUGADOR -> TORNEO -> PARTIDO
-CRUD       CRUD      CRUD
-
-final  semi    cuarto     octavo
-
-  1    2.3   4.5.6.7      8.9.1.11.12.13.14.15

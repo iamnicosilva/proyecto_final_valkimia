@@ -1,30 +1,28 @@
-﻿using TorneoTenis.API.Models.Response.DTO;
+﻿using System.ComponentModel.DataAnnotations;
+using TorneoTenis.API.Models.DTO;
+using TorneoTenis.API.Models.Entities;
 
 namespace TorneoTenis.API.Models.Request
 {
-    public class TorneoManualRequest
+
+    public class TorneoRequestExistentes
     {
-        public string Nombre { get; set; }
-        public int Anio { get; set; }
-        public bool EsTorneoMasculino { get; set; }
+        [Required(ErrorMessage = "El torneo es obligatorio.")]
+        public TorneoDTO Torneo { get; set; }
 
-    }
-
-    public class TorneoRequest
-    {
-        public string Nombre { get; set; }
-        public int Anio { get; set; }
-
-    }
-
-
-
-    public class TorneoCompletoRequest
-    {
-        public TorneoRequest NuevoTorneo { get; set; }
-
-
+        [Required(ErrorMessage = "La lista de jugadores es obligatoria.")]
+        [MinLength(2, ErrorMessage = "Debe haber al menos dos participantes.")]
         public List<JugadorDTO> Jugadores { get; set; }
+    }
+
+    public class TorneoRequestNuevos
+    {
+        [Required(ErrorMessage = "El torneo es obligatorio.")]
+        public TorneoDTO Torneo { get; set; }
+
+        [Required(ErrorMessage = "La lista de jugadores es obligatoria.")]
+        [MinLength(2, ErrorMessage = "Debe haber al menos dos participantes.")]
+        public List<JugadorRequest> Jugadores { get; set; }
     }
 
 

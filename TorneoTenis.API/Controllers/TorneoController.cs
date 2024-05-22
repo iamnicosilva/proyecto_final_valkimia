@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TorneoTenis.API.Services.Interfaces;
-using TorneoTenis.API.Models.Response.DTO;
+using TorneoTenis.API.Models.DTO;
 
 namespace TorneoTenis.API.Controllers
 {
@@ -20,141 +20,92 @@ namespace TorneoTenis.API.Controllers
             _torneoService = torneoService;
         }
 
-        //CREATE TORNEO:
+        // CREAR TORNEO MASCULINO COMPLETO CON JUGADORES EXISTENTES
         [HttpPost]
-        [Route("/crearTorneoManual")]
-        public async Task AgregarTorneo(TorneoManualRequest nuevoTorneo)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(JugadorResponse), (int)HttpStatusCode.OK)]
+        [Route("/TorneoMasculinoDeRegistrados")]
+        public async Task<JugadorResponse> CrearTorneoMasculinoDeRegistrados(TorneoRequestExistentes TorneoRequest)
         {
-            await _torneoService.AgregarTorneo(nuevoTorneo);
+            var ganador = await _torneoService.CrearTorneo(TorneoRequest, 2);
+            return ganador;
+           
+        }
+
+        // CREAR TORNEO FEMENINO COMPLETO CON JUGADORAS EXISTENTES
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(JugadorResponse), (int)HttpStatusCode.OK)]
+        [Route("/TorneoFemeninoDeRegistradas")]
+        public async Task<JugadorResponse> CrearTorneoFemeninoDeRegistradas(TorneoRequestExistentes TorneoRequest)
+        {
+            var ganador = await _torneoService.CrearTorneo(TorneoRequest, 1);
+            return ganador;
+
+        }
+
+        //CREAR TORNEO MASCULINO COMPLETO CREANDO JUGADORES
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(JugadorResponse), (int)HttpStatusCode.OK)]
+        [Route("/TorneoMasculinoNuevosJugadores")]
+        public async Task<JugadorResponse> CrearTorneoMasculinoDeNuevos(TorneoRequestNuevos TorneoRequest)
+        {
+            var ganador = await _torneoService.RegistrarJugadoresYCrearTorneo(TorneoRequest, 2);
+            return ganador;
+
+        }
+
+        //CREAR TORNEO FEMENINO COMPLETO CREANDO JUGADORAS
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(JugadorResponse), (int)HttpStatusCode.OK)]
+        [Route("/TorneoFemeninoNuevasJugadoras")]
+        public async Task<JugadorResponse> CrearTorneoFemeninoDeNuevas(TorneoRequestNuevos TorneoRequest)
+        {
+            var ganadora = await _torneoService.RegistrarJugadoresYCrearTorneo(TorneoRequest, 1);
+            return ganadora;
 
         }
 
 
         //READ TORNEO:
         [HttpGet]
-        [Route("/obtener/{id}")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(<Torneo>), (int)HttpStatusCode.OK)]
-        public async Task <IActionResult> BuscarTorneo(int id)
+        [Route("/obtener/{nombre}/{anio}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(List<TorneoResponse>), (int)HttpStatusCode.OK)]
+        public async Task <IActionResult> BuscarTorneo(string nombre, int anio)
         {
-            var torneo = await _torneoService.BuscarTorneo(id);
+            var torneo = await _torneoService.BuscarTorneo(nombre, anio);
             return Ok(torneo);
 
         }
 
-        //UPDATE TORNEO:
-        [HttpPut]
-        [Route("/actualizar/{id}")]
-        public async Task ActualizarTorneo(int id, TorneoManualRequest nuevoTorneo)
-        {
-            await _torneoService.ActualizarTorneo(id, nuevoTorneo);
-        }
 
         //DELETE TORNEO:
         [HttpPut]
-        [Route("/eliminar/{id}")]
-        public async Task EliminarTorneo(int id)
+        [Route("/eliminar/")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task EliminarTorneo(TorneoDTO torneo)
         {
-            await _torneoService.EliminarTorneo(id);
+            await _torneoService.EliminarTorneo(torneo);
         }
 
         //READ TODOS LOS TORNEOES:
         [HttpGet]
         [Route("/obtenerTodos")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(<Torneo>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<TorneoWithGeneroDTO>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> BuscarTorneos()
         {
-            var torneo = await _torneoService.BuscarTorneos();
-            return Ok(torneo);
+            var torneos = await _torneoService.BuscarTorneos();
 
-        }
-
-
-        //IActionResult Post([FromBody] TorneoRequest torneoRequest)
-
-        //AUTOCOMPLETAR TORNEO (TOMA LOS JUGADORES Y TE ARMA TODO)
-        [HttpPost]
-        [Route("/crearTorneoMasculinoCompleto")]
-        public async Task AgregarTorneoMasculinoCompleto(TorneoCompletoRequest torneoCompleto)
-        {
-            await _torneoService.AgregarTorneoCompleto(torneoCompleto, true);
-
-        }
-
-        [HttpPost]
-        [Route("/crearTorneoFemeninoCompleto")]
-        public async Task AgregarTorneoFemeninoCompleto(TorneoCompletoRequest torneoCompleto)
-        {
-            await _torneoService.AgregarTorneoCompleto(torneoCompleto, false);
+            return Ok(torneos);
 
         }
 
 
 
 
-
-        //AGREGAR ENDPOINTS CON CONSULTAS VARIAS (TORNEO POR AÑO, POR JUGADOR, POR TIPO DE TORNEO, ETC)
-
-
-
-
-
-
-
-
-
-        //[HttpGet]
-        //[Route("GetAllDocentesWithMaterias/{materia}")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(List<DocenteWithMateriaResponse>),(int)HttpStatusCode.OK)]
-        //public IActionResult GetAllDocentesWithMaterias(string materia)
-        //{
-        //    return Ok();
-        //}
-
-
-
-
-        //[HttpGet]
-        //[Route("Persona/{id}")]
-        //public IActionResult Get(int id)
-        //{
-        //    // TRAER UN ALUMNO ESPECIFICO DE LA DB
-        //    //var AlumnoEspecifico = ListaAlumnos.FirstOrDefault(a => a.Id == id);
-
-        //    return Ok();
-        //}
-
-
-
-
-        //[HttpPut]
-        //[Route("Alumno/{id}")]
-        //public IActionResult Put(int id, [FromBody] PersonaRequest alumnoRequest)
-        //{
-        //    //BUSCAR EN LA DB EL ALUMNO ESPECIFICO Y ACTUALIZAR SUS DATOS
-
-        //    var AlumnoEspecifico = ListaAlumnos.FirstOrDefault(a => a.Id == id);
-
-        //    AlumnoEspecifico.Nombre = alumnoRequest.Nombre;
-        //    AlumnoEspecifico.Apellido = alumnoRequest.Apellido;
-        //    AlumnoEspecifico.DNI = alumnoRequest.DNI;
-
-        //    return Ok(ListaAlumnos);
-        //}
-
-        //[HttpDelete]
-        //[Route("Alumno/{id}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    //BUSCAR EN LA DB EL ALUMNO ESPECIFICO Y ELIMINARLO (CAMBIAR A TRUE SU ATRIBUTO ELIMINADO)
-
-        //    var AlumnoEspecifico = ListaAlumnos.FirstOrDefault(a => a.Id == id);
-
-        //    AlumnoEspecifico.Eliminado = true;
-
-        //    return Ok(ListaAlumnos);
-        //}
     }
 }

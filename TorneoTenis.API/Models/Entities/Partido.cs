@@ -7,12 +7,10 @@ namespace TorneoTenis.API.Models.Entities
     {
         public int Id { get; set; }
         public int Etapa { get; set; } 
-        public DateOnly Fecha { get; set; }
-        public string DescripcionGanador { get; set; }
+        public DateTime Fecha { get; set; }
         public int IdGanador { get; set; }
         public int IdPerdedor { get; set; }
         public int IdTorneo { get; set; }
-        public bool Eliminado { get; set; }
         public virtual Jugador ganador { get; set; }
         public virtual Jugador perdedor { get; set; }
         public virtual Torneo torneo { get; set; }
@@ -27,8 +25,6 @@ namespace TorneoTenis.API.Models.Entities
                 builder.Property(x => x.Id).HasColumnName("Id").ValueGeneratedOnAdd().IsRequired();
                 builder.Property(x => x.Etapa).HasColumnName("Etapa").HasMaxLength(2).IsRequired();
                 builder.Property(x => x.Fecha).HasColumnName("Fecha").IsRequired().HasMaxLength(100);
-                builder.Property(x => x.DescripcionGanador).HasColumnName("DescripcionGanador").IsRequired();
-                builder.Property(x => x.Eliminado).HasColumnName("Eliminado").HasDefaultValue(false).IsRequired();
 
                 builder.Property(x => x.IdGanador).HasColumnName("Ganador").IsRequired();
                 builder.Property(x => x.IdPerdedor).HasColumnName("Perdedor").IsRequired();

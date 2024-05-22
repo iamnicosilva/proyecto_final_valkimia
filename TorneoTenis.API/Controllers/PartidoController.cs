@@ -19,53 +19,54 @@ namespace TorneoTenis.API.Controllers
             _partidoService = partidoService;
         }
 
-        //CREATE PARTIDO:
-        [HttpPost]
-        [Route("/crearPartido")]
-        public async Task AgregarPartido(PartidoRequest nuevoPartido)
-        {
-            await _partidoService.AgregarPartido(nuevoPartido);
-
-        }
-
-
-        //READ PARTIDO:
-        [HttpGet]
-        [Route("/obtenerPartido/{id}")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(<Partido>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> BuscarPartido(int id)
-        {
-            var partido = await _partidoService.BuscarPartido(id);
-            return Ok(partido);
-
-        }
-
-        //UPDATE PARTIDO:
-        [HttpPut]
-        [Route("/actualizarPartido/{id}")]
-        public async Task ActualizarPartido(int id, PartidoRequest nuevoPartido)
-        {
-            await _partidoService.ActualizarPartido(id, nuevoPartido);
-        }
-
-        //DELETE PARTIDO:
-        [HttpPut]
-        [Route("/eliminarPartido/{id}")]
-        public async Task EliminarPartido(int id)
-        {
-            await _partidoService.EliminarPartido(id);
-        }
-
         //READ TODOS LOS PARTIDOS:
         [HttpGet]
         [Route("/obtenerTodosLosPartidos")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(<Partido>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof( List< PartidoResponse >), (int) HttpStatusCode.OK)]
         public async Task<IActionResult> BuscarPartidos()
         {
-            var partido = await _partidoService.BuscarPartidos();
+            var partidos = await _partidoService.BuscarPartidos();
+            return Ok(partidos);
+
+        }
+
+        //READ PARTIDO ESPECIFICO:
+        [HttpGet]
+        [Route("/obtenerPartidoEspecifico/{NombreDeTorneo}/{Etapa}/{Anio}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof( PartidoResponse ), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> BuscarPartidos([FromRoute] string NombreDeTorneo, [FromRoute] int Etapa, [FromRoute] int Anio)
+        {
+            var partido = await _partidoService.BuscarPartido(NombreDeTorneo,Etapa,Anio);
+
             return Ok(partido);
+
+        }
+
+        //PARTIDOS WITH TORNEO:
+        [HttpGet]
+        [Route("/PartidosPorTorneo/{nombreTorneo}/{anioTroneo}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof( List<PartidoResponse> ), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> BuscarPartidosPorTorneo([FromRoute] string nombreTorneo, [FromRoute] int anioTroneo)
+        {
+            var partidos = await _partidoService.BuscarPartidosPorTorneo(nombreTorneo, anioTroneo);
+
+            return Ok(partidos);
+
+        }
+
+        //PARTIDOS WITH JUGADOR:
+        [HttpGet]
+        [Route("/PartidosPorJugador/{nombreJugador}/{apellidoJugador}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(List<PartidoResponse>), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> BuscarPartidosPorJugador([FromRoute] string nombreJugador, [FromRoute] string apellidoJugador)
+        {
+            var partidos = await _partidoService.BuscarPartidosPorJugador(nombreJugador, apellidoJugador);
+
+            return Ok(partidos);
 
         }
 

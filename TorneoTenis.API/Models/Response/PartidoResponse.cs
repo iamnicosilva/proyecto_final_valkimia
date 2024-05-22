@@ -1,17 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-
+using TorneoTenis.API.Models.DTO;
 
 namespace TorneoTenis.API.Models.Response
 {
     public class PartidoResponse
     {
-        public int Etapa { get; set; }
-        public DateOnly Fecha { get; set; }
-        public int IdGanador { get; set; }
-        public int IdPerdedor { get; set; }
-        public int IdTorneo { get; set; }
-        public string DescripcionGanador { get; set; }
+        public PartidoDTO Partido { get; set; }
+        public JugadorDTO Ganador { get; set; }
+        public JugadorDTO Perdedor { get; set; }
 
     }
 }

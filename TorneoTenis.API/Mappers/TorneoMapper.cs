@@ -1,7 +1,7 @@
 ﻿using TorneoTenis.API.Models.Entities;
 using TorneoTenis.API.Models.Request;
 using TorneoTenis.API.Models.Response;
-using TorneoTenis.API.Models.Response.DTO;
+using TorneoTenis.API.Models.DTO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
@@ -9,47 +9,55 @@ namespace TorneoTenis.API.Mappers
 {
     public static class TorneoMapper
     {
-        public static Torneo ToTorneo(this TorneoManualRequest torneoRequest)
+        public static Torneo ToTorneo(this TorneoDTO torneoDTO, int idGenero)
         {
             return new Torneo
             {
-                Nombre = torneoRequest.Nombre,
-                Anio = torneoRequest.Anio
-
-            };
-        }
-
-        public static Torneo ToTorneoCompleto(this TorneoCompletoRequest torneoRequest, bool EsTorneoMasculino)
-        {
-            return new Torneo
-            {
-                Nombre = torneoRequest.NuevoTorneo.Nombre,
-                Anio = torneoRequest.NuevoTorneo.Anio,
-                EsTorneoMasculino = EsTorneoMasculino
-
+                Nombre = torneoDTO.Nombre,
+                Anio = torneoDTO.Anio,
+                IdGenero = idGenero
             };
         }
 
 
 
 
-        public static TorneoResponse ToTorneoResponse(this Torneo torneo)
+        public static TorneoResponse ToTorneoResponse(this List<PartidoResponse> partidosResponses, string nombre, int anio )
         {
             return new TorneoResponse
             {
-                Nombre = torneo.Nombre,
-                Anio = torneo.Anio
-
+                Nombre = nombre,
+                Anio = anio,
+                Fixture = partidosResponses
             };
         }
 
-        public static Torneo ToTorneoUpdate(this Torneo torneoExistente, TorneoManualRequest torneoRequest)
+        public static TorneoRequestExistentes NuevosToTorneoExistentes(this TorneoRequestNuevos torneoRequest)
         {
-            torneoExistente.Nombre = torneoRequest.Nombre;
-            torneoExistente.Anio = torneoRequest.Anio;
+            return new TorneoRequestExistentes
+            {
+                Torneo = torneoRequest.Torneo,
+                Jugadores = torneoRequest.Jugadores.Select(j => new JugadorDTO
+                {
+                    Nombre = j.Nombre,
+                    Apellido = j.Apellido
+                }).ToList()
+            };
 
-            return torneoExistente;
         }
+
+        public static TorneoWithGeneroDTO ToTorneoWithGeneroDTO(this Torneo torneo, string genero)
+        {
+            return new TorneoWithGeneroDTO
+            {
+                Nombre = torneo.Nombre,
+                Anio = torneo.Anio,
+                Genero = genero
+            };
+        }
+
+
+
 
         public static Torneo ToTorneoDelete(this Torneo torneoExistente)
         {

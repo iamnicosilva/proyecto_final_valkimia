@@ -3,14 +3,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace TorneoTenis.API.Migrations
 {
     /// <inheritdoc />
-    public partial class act_torneogenero : Migration
+    public partial class tabla_genero : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Genero",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genero", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Jugador",
                 columns: table => new
@@ -23,12 +39,18 @@ namespace TorneoTenis.API.Migrations
                     Fuerza = table.Column<int>(type: "int", maxLength: 3, nullable: false, defaultValue: 0),
                     Velocidad = table.Column<int>(type: "int", maxLength: 3, nullable: false, defaultValue: 0),
                     Reaccion = table.Column<int>(type: "int", maxLength: 3, nullable: false, defaultValue: 0),
-                    EsHombre = table.Column<bool>(type: "bit", nullable: false),
-                    Eliminado = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Eliminado = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Genero = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Jugador", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Jugador_Genero_Genero",
+                        column: x => x.Genero,
+                        principalTable: "Genero",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -39,12 +61,18 @@ namespace TorneoTenis.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Año = table.Column<int>(type: "int", maxLength: 4, nullable: false),
-                    EsTorneoMasculino = table.Column<bool>(name: "Es Torneo Masculino", type: "bit", nullable: false),
-                    Eliminado = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Eliminado = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Genero = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Torneo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Torneo_Genero_Genero",
+                        column: x => x.Genero,
+                        principalTable: "Genero",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,8 +82,7 @@ namespace TorneoTenis.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Etapa = table.Column<int>(type: "int", maxLength: 2, nullable: false),
-                    Fecha = table.Column<DateOnly>(type: "date", maxLength: 100, nullable: false),
-                    DescripcionGanador = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", maxLength: 100, nullable: false),
                     Ganador = table.Column<int>(type: "int", nullable: false),
                     Perdedor = table.Column<int>(type: "int", nullable: false),
                     Torneo = table.Column<int>(type: "int", nullable: false),
@@ -82,6 +109,20 @@ namespace TorneoTenis.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Genero",
+                columns: new[] { "Id", "Descripcion", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "Femenino", "Mujer" },
+                    { 2, "Masculino", "Hombre" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Jugador_Genero",
+                table: "Jugador",
+                column: "Genero");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Partido_Ganador",
                 table: "Partido",
@@ -96,6 +137,11 @@ namespace TorneoTenis.API.Migrations
                 name: "IX_Partido_Torneo",
                 table: "Partido",
                 column: "Torneo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Torneo_Genero",
+                table: "Torneo",
+                column: "Genero");
         }
 
         /// <inheritdoc />
@@ -109,6 +155,9 @@ namespace TorneoTenis.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Torneo");
+
+            migrationBuilder.DropTable(
+                name: "Genero");
         }
     }
 }

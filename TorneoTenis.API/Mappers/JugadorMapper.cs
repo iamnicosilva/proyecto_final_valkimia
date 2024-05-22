@@ -1,7 +1,7 @@
 ﻿using TorneoTenis.API.Models.Entities;
 using TorneoTenis.API.Models.Request;
 using TorneoTenis.API.Models.Response;
-using TorneoTenis.API.Models.Response.DTO;
+using TorneoTenis.API.Models.DTO;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
@@ -9,7 +9,7 @@ namespace TorneoTenis.API.Mappers
 {
     public static class JugadorMapper
     {
-        public static Jugador ToJugador(this JugadorRequest jugadorRequest)
+        public static Jugador ToJugador(this JugadorRequest jugadorRequest, int IdGenero)
         {
             return new Jugador
             {
@@ -19,12 +19,11 @@ namespace TorneoTenis.API.Mappers
                 Fuerza = jugadorRequest.Fuerza,
                 Velocidad = jugadorRequest.Velocidad,
                 Reaccion = jugadorRequest.Reaccion,
-                EsHombre = jugadorRequest.EsHombre
-
+                IdGenero = IdGenero
             };
         }
 
-        public static JugadorResponse ToJugadorResponse(this Jugador jugador)
+        public static JugadorResponse ToJugadorResponse(this Jugador jugador, string genero)
         {
             return new JugadorResponse
             {
@@ -34,12 +33,11 @@ namespace TorneoTenis.API.Mappers
                 Fuerza = jugador.Fuerza,
                 Velocidad = jugador.Velocidad,
                 Reaccion = jugador.Reaccion,
-                EsHombre = jugador.EsHombre
-
+                Genero = genero
             };
         }
 
-        public static Jugador ToJugadorUpdate(this Jugador jugadorExistente, JugadorRequest jugadorRequest)
+        public static Jugador ToJugadorUpdate(this Jugador jugadorExistente, JugadorUpdateRequest jugadorRequest)
         {
             jugadorExistente.Nombre = jugadorRequest.Nombre;
             jugadorExistente.Apellido = jugadorRequest.Apellido;
@@ -47,7 +45,6 @@ namespace TorneoTenis.API.Mappers
             jugadorExistente.Fuerza = jugadorRequest.Fuerza;
             jugadorExistente.Velocidad = jugadorRequest.Velocidad;
             jugadorExistente.Reaccion = jugadorRequest.Reaccion;
-            jugadorExistente.EsHombre = jugadorRequest.EsHombre;
 
             return jugadorExistente;
         }
@@ -57,6 +54,24 @@ namespace TorneoTenis.API.Mappers
             jugadorExistente.Eliminado = true;
 
             return jugadorExistente;
+        }
+
+        public static JugadorDTO ToJugadorDTO(this Jugador jugador)
+        {
+            return new JugadorDTO
+            {
+                Nombre = jugador.Nombre,
+                Apellido = jugador.Apellido
+            };
+        }
+
+        public static JugadorDTO JugadorRequestToJugadorDTO(this JugadorRequest jugador)
+        {
+            return new JugadorDTO
+            {
+                Nombre = jugador.Nombre,
+                Apellido = jugador.Apellido
+            };
         }
     }
 }

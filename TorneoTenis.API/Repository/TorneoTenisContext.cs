@@ -19,6 +19,7 @@ namespace TorneoTenis.API.Repository
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Jugador>().HasQueryFilter(x => !x.Eliminado); //llevar esto a clase padre para que herede eliminado
+            builder.Entity<Torneo>().HasQueryFilter(x => !x.Eliminado); //llevar esto a clase padre para que herede eliminado
 
             base.OnModelCreating(builder);
 

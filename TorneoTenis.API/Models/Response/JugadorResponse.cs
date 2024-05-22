@@ -11,19 +11,14 @@ namespace TorneoTenis.API.Models.Response
         //[JsonPropertyName("surname")]
         public string Apellido { get; set; }
 
-        [Range(0, 100)]
         public int Habilidad { get; set; }
 
-        [Range(0, 100)]
         public int Fuerza { get; set; }
 
-        [Range(0, 100)]
         public int Velocidad { get; set; }
 
-        [Range(0, 100)]
         public int Reaccion { get; set; }
 
-        public bool EsHombre { get; set; }
-
+        public string Genero { get; set; }
     }
 }

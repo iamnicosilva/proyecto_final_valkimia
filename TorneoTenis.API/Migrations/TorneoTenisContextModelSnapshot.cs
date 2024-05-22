@@ -22,6 +22,46 @@ namespace TorneoTenis.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("TorneoTenis.API.Models.Entities.Genero", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("Descripcion");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("Nombre");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genero", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Descripcion = "Femenino",
+                            Nombre = "Mujer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descripcion = "Masculino",
+                            Nombre = "Hombre"
+                        });
+                });
+
             modelBuilder.Entity("TorneoTenis.API.Models.Entities.Jugador", b =>
                 {
                     b.Property<int>("Id")
@@ -43,10 +83,6 @@ namespace TorneoTenis.API.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("Eliminado");
 
-                    b.Property<bool>("EsHombre")
-                        .HasColumnType("bit")
-                        .HasColumnName("EsHombre");
-
                     b.Property<int>("Fuerza")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(3)
@@ -60,6 +96,10 @@ namespace TorneoTenis.API.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0)
                         .HasColumnName("Habilidad");
+
+                    b.Property<int>("IdGenero")
+                        .HasColumnType("int")
+                        .HasColumnName("Genero");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -83,6 +123,8 @@ namespace TorneoTenis.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdGenero");
+
                     b.ToTable("Jugador", (string)null);
                 });
 
@@ -95,11 +137,6 @@ namespace TorneoTenis.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DescripcionGanador")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DescripcionGanador");
-
                     b.Property<bool>("Eliminado")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -111,9 +148,9 @@ namespace TorneoTenis.API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Etapa");
 
-                    b.Property<DateOnly>("Fecha")
+                    b.Property<DateTime>("Fecha")
                         .HasMaxLength(100)
-                        .HasColumnType("date")
+                        .HasColumnType("datetime2")
                         .HasColumnName("Fecha");
 
                     b.Property<int>("IdGanador")
@@ -159,9 +196,9 @@ namespace TorneoTenis.API.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("Eliminado");
 
-                    b.Property<bool>("EsTorneoMasculino")
-                        .HasColumnType("bit")
-                        .HasColumnName("Es Torneo Masculino");
+                    b.Property<int>("IdGenero")
+                        .HasColumnType("int")
+                        .HasColumnName("Genero");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -171,7 +208,20 @@ namespace TorneoTenis.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdGenero");
+
                     b.ToTable("Torneo", (string)null);
+                });
+
+            modelBuilder.Entity("TorneoTenis.API.Models.Entities.Jugador", b =>
+                {
+                    b.HasOne("TorneoTenis.API.Models.Entities.Genero", "genero")
+                        .WithMany()
+                        .HasForeignKey("IdGenero")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("genero");
                 });
 
             modelBuilder.Entity("TorneoTenis.API.Models.Entities.Partido", b =>
@@ -199,6 +249,17 @@ namespace TorneoTenis.API.Migrations
                     b.Navigation("perdedor");
 
                     b.Navigation("torneo");
+                });
+
+            modelBuilder.Entity("TorneoTenis.API.Models.Entities.Torneo", b =>
+                {
+                    b.HasOne("TorneoTenis.API.Models.Entities.Genero", "genero")
+                        .WithMany()
+                        .HasForeignKey("IdGenero")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("genero");
                 });
 #pragma warning restore 612, 618
         }

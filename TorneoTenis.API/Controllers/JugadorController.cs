@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TorneoTenis.API.Services.Interfaces;
+using TorneoTenis.API.Models.DTO;
+using System.Collections.Generic;
 
 namespace TorneoTenis.API.Controllers
 {
@@ -21,20 +23,53 @@ namespace TorneoTenis.API.Controllers
 
         //CREATE JUGADOR:
         [HttpPost]
-        [Route("/crearJugador")]
-        public async Task AgregarJugador(JugadorRequest nuevoJugador)
+        [Route("/crearJugadorHombre")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task AgregarJugadorHombre(JugadorRequest nuevoJugador)
         {
-            await _jugadorService.AgregarJugador(nuevoJugador);
+            await _jugadorService.AgregarJugador(nuevoJugador, 2);
+
+        }
+        //CREATE JUGADORA:
+        [HttpPost]
+        [Route("/crearJugadoraMujer")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task AgregarJugadoraMujer(JugadorRequest nuevaJugadora)
+        {
+            await _jugadorService.AgregarJugador(nuevaJugadora, 1);
+
+        }
+
+        //CREATE JUGADORES DESDE LISTA:
+        [HttpPost]
+        [Route("/crearJugadoresHombresDesdeLista")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task AgregarJugadoresHombres(List<JugadorRequest> nuevosJugadores)
+        {
+            await _jugadorService.AgregarJugadorDesdeLista(nuevosJugadores, 2);
+
+        }
+        //CREATE JUGADORAS DESDE LISTA:
+        [HttpPost]
+        [Route("/crearJugadorasMujeresDesdeLista")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task AgregarJugadorasMujeres(List<JugadorRequest> nuevasJugadoras)
+        {
+            await _jugadorService.AgregarJugadorDesdeLista(nuevasJugadoras, 1);
 
         }
 
 
         //READ JUGADOR:
         [HttpGet]
-        [Route("/obtenerJugador/{nombre,apellido}")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(<Jugador>), (int)HttpStatusCode.OK)]
-        public async Task <IActionResult> BuscarJugador(string nombre, string apellido)
+        [Route("/obtenerJugador/{nombre}/{apellido}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(JugadorResponse), (int) HttpStatusCode.OK)]
+        public async Task <IActionResult> BuscarJugador([FromRoute] string nombre, [FromRoute] string apellido)
         {
             var jugador = await _jugadorService.BuscarJugador(nombre , apellido);
             return Ok(jugador);
@@ -43,97 +78,35 @@ namespace TorneoTenis.API.Controllers
 
         //UPDATE JUGADOR:
         [HttpPut]
-        [Route("/actualizarJugador/{id}")]
-        public async Task ActualizarJugador(int id,JugadorRequest nuevoJugador)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [Route("/actualizarJugador/{nombre}/{apellido}")]
+        public async Task ActualizarJugador([FromRoute] string nombre, [FromRoute] string apellido, JugadorUpdateRequest Jugador)
         {
-            await _jugadorService.ActualizarJugador(id, nuevoJugador);
+            await _jugadorService.ActualizarJugador(Jugador, nombre, apellido);
         }
 
         //DELETE JUGADOR:
         [HttpPut]
-        [Route("/eliminarJugador/{id}")]
-        public async Task EliminarJugador(int id)
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [Route("/eliminarJugador/")]
+        public async Task EliminarJugador(JugadorDTO jugador)
         {
-            await _jugadorService.EliminarJugador(id);
+            await _jugadorService.EliminarJugador(jugador);
         }
 
         //READ TODOS LOS JUGADORES:
         [HttpGet]
         [Route("/obtenerTodosLosJugadores")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(<Jugador>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<JugadorResponse>), (int) HttpStatusCode.OK)]
         public async Task<IActionResult> BuscarJugadores()
         {
-            var jugador = await _jugadorService.BuscarJugadores();
-            return Ok(jugador);
+            var jugadores = await _jugadorService.BuscarJugadores();
+            return Ok(jugadores);
 
         }
 
-
-        //IActionResult Post([FromBody] JugadorRequest jugadorRequest)
-
-
-
-
-
-
-
-
-
-
-
-
-        //[HttpGet]
-        //[Route("GetAllDocentesWithMaterias/{materia}")]
-        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(List<DocenteWithMateriaResponse>),(int)HttpStatusCode.OK)]
-        //public IActionResult GetAllDocentesWithMaterias(string materia)
-        //{
-        //    return Ok();
-        //}
-
-
-
-
-        //[HttpGet]
-        //[Route("Persona/{id}")]
-        //public IActionResult Get(int id)
-        //{
-        //    // TRAER UN ALUMNO ESPECIFICO DE LA DB
-        //    //var AlumnoEspecifico = ListaAlumnos.FirstOrDefault(a => a.Id == id);
-
-        //    return Ok();
-        //}
-
-
-
-
-        //[HttpPut]
-        //[Route("Alumno/{id}")]
-        //public IActionResult Put(int id, [FromBody] PersonaRequest alumnoRequest)
-        //{
-        //    //BUSCAR EN LA DB EL ALUMNO ESPECIFICO Y ACTUALIZAR SUS DATOS
-
-        //    var AlumnoEspecifico = ListaAlumnos.FirstOrDefault(a => a.Id == id);
-
-        //    AlumnoEspecifico.Nombre = alumnoRequest.Nombre;
-        //    AlumnoEspecifico.Apellido = alumnoRequest.Apellido;
-        //    AlumnoEspecifico.DNI = alumnoRequest.DNI;
-
-        //    return Ok(ListaAlumnos);
-        //}
-
-        //[HttpDelete]
-        //[Route("Alumno/{id}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    //BUSCAR EN LA DB EL ALUMNO ESPECIFICO Y ELIMINARLO (CAMBIAR A TRUE SU ATRIBUTO ELIMINADO)
-
-        //    var AlumnoEspecifico = ListaAlumnos.FirstOrDefault(a => a.Id == id);
-
-        //    AlumnoEspecifico.Eliminado = true;
-
-        //    return Ok(ListaAlumnos);
-        //}
+        //CREAR JUGADORES A PARTIR DE UNA LISTA
     }
 }

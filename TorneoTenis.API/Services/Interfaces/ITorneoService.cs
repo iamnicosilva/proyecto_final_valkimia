@@ -1,17 +1,17 @@
-﻿using TorneoTenis.API.Models.Entities;
+﻿using TorneoTenis.API.Models.DTO;
+using TorneoTenis.API.Models.Entities;
 using TorneoTenis.API.Models.Request;
 using TorneoTenis.API.Models.Response;
-using TorneoTenis.API.Models.Response.DTO;
 
 namespace TorneoTenis.API.Services.Interfaces
 {
     public interface ITorneoService
     {
-        Task AgregarTorneo(TorneoManualRequest nuevoTorneo);
-        Task<TorneoResponse> BuscarTorneo(int id);
-        Task ActualizarTorneo(int id, TorneoManualRequest TorneoActualizado);
-        Task EliminarTorneo(int id);
-        Task<List<TorneoResponse>> BuscarTorneos();
-        Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto, bool EsTorneoMasculino);
+        Task<TorneoResponse> BuscarTorneo(string nombre, int anio);
+        Task EliminarTorneo(TorneoDTO torneo);
+        Task<List<TorneoWithGeneroDTO>> BuscarTorneos();
+        Task<JugadorResponse> CrearTorneo(TorneoRequestExistentes TorneoRequest, int IdGenero);
+        Task<JugadorResponse> RegistrarJugadoresYCrearTorneo(TorneoRequestNuevos TorneoRequest, int IdGenero);
+
     }
 }

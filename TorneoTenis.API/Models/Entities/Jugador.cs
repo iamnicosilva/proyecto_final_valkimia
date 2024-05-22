@@ -22,8 +22,9 @@ namespace TorneoTenis.API.Models.Entities
         [Range(0, 100)]
         public int Reaccion {  get; set; }
 
-        public bool EsHombre {  get; set; }
         public bool Eliminado { get; set; }
+        public int IdGenero {  get; set; }
+        public virtual Genero genero { get; set; }
 
         public class JugadorConfig : IEntityTypeConfiguration<Jugador>
         {
@@ -38,8 +39,9 @@ namespace TorneoTenis.API.Models.Entities
                 builder.Property(x => x.Fuerza).HasColumnName("Fuerza").HasMaxLength(3).HasDefaultValue(0);
                 builder.Property(x => x.Velocidad).HasColumnName("Velocidad").HasMaxLength(3).HasDefaultValue(0);
                 builder.Property(x => x.Reaccion).HasColumnName("Reaccion").HasMaxLength(3).HasDefaultValue(0);
-                builder.Property(x => x.EsHombre).HasColumnName("EsHombre").IsRequired();
                 builder.Property(x => x.Eliminado).HasColumnName("Eliminado").HasDefaultValue(false).IsRequired();
+                builder.Property(x => x.IdGenero).HasColumnName("Genero").IsRequired();
+                builder.HasOne(x => x.genero).WithMany().HasForeignKey(x => x.IdGenero);
 
             }
         }

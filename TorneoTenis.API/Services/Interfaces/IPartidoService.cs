@@ -6,11 +6,10 @@ namespace TorneoTenis.API.Services.Interfaces
 {
     public interface IPartidoService
     {
-        //Task<IEnumerable<AlumnoWithMateriasResponse>> GetAllAlumnosWithMaterias(int idAula);
-        Task AgregarPartido(PartidoRequest nuevoPartido);
-        Task <PartidoResponse> BuscarPartido(int id);
-        Task ActualizarPartido(int id, PartidoRequest PartidoActualizado);
-        Task EliminarPartido(int id);
-        Task <List<PartidoResponse>> BuscarPartidos();
+        Task CrearPartido(PartidoRequest nuevoPartido);
+        Task<PartidoResponse> BuscarPartido(string torneo, int anio, int etapa);
+        Task<List<PartidoResponse>> BuscarPartidos();
+        Task<List<PartidoResponse>> BuscarPartidosPorTorneo(string nombreTorneo, int anioTroneo);
+        Task<List<PartidoResponse>> BuscarPartidosPorJugador(string nombreJugador, string apellidoJugador);
     }
 }

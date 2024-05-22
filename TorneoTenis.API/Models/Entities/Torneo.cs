@@ -9,9 +9,9 @@ namespace TorneoTenis.API.Models.Entities
         public int Id { get; set; }
         public string Nombre { get; set; }
         public int Anio { get; set; }
-        public bool EsTorneoMasculino { get; set; }
         public bool Eliminado { get; set; }
-        //public int TipoCancha { get; set; }
+        public int IdGenero { get; set; }
+        public virtual Genero genero { get; set; }
 
         public class TorneoConfig : IEntityTypeConfiguration<Torneo>
         {
@@ -22,19 +22,10 @@ namespace TorneoTenis.API.Models.Entities
                 builder.Property(x => x.Id).HasColumnName("Id").ValueGeneratedOnAdd().IsRequired();
                 builder.Property(x => x.Nombre).HasColumnName("Nombre").HasMaxLength(100).IsRequired();
                 builder.Property(x => x.Anio).HasColumnName("Año").HasMaxLength(4).IsRequired();
-                builder.Property(x => x.EsTorneoMasculino).HasColumnName("Es Torneo Masculino").IsRequired();
                 builder.Property(x => x.Eliminado).HasColumnName("Eliminado").HasDefaultValue(false).IsRequired();
+                builder.Property(x => x.IdGenero).HasColumnName("Genero").IsRequired();
+                builder.HasOne(x => x.genero).WithMany().HasForeignKey(x => x.IdGenero);
 
-
-                //builder.HasData(new Torneo()
-                //{
-                //    Id = 1,
-                //    Nombre = "Wimbledon",
-                //    Año = 2026
-
-                //},
-                //new Torneo()
-                //{});
             }
         }
     }

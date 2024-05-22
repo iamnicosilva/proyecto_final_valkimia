@@ -1,181 +1,181 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TorneoTenis.API.Models.Entities;
+﻿using TorneoTenis.API.Models.Entities;
 using TorneoTenis.API.Mappers;
 using TorneoTenis.API.Models.Request;
 using TorneoTenis.API.Models.Response;
 using TorneoTenis.API.Repository;
 using TorneoTenis.API.Services.Interfaces;
-using TorneoTenis.API.Models.Response.DTO;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.EntityFrameworkCore.Storage.Json;
-using TorneoTenis.API.Services.Auxiliares;
+using TorneoTenis.API.Repository.CommonQuerys.Interfaces;
+using TorneoTenis.API.Services.Auxiliares.Interfaces;
+using TorneoTenis.API.Models.DTO;
+using escuela.API.Exceptions;
 
 namespace TorneoTenis.API.Services
 {
     public class TorneoService : ITorneoService
     {
         private readonly TorneoTenisContext _torneoTenisContext;
+        private readonly ITorneoRepository _torneoRepository;
+        private readonly IJugadorRepository _jugadorRepository;
+        private readonly IPartidoRepository _partidoRepository;
+        private readonly IGeneroRepository _generoRepository;
+        private readonly IJugarTorneoService _jugarTorneoService;
+        private readonly IJugadorService _jugadorService;
+        
 
-        public TorneoService(TorneoTenisContext torneoTenisContex)
+        public TorneoService(TorneoTenisContext torneoTenisContex, 
+            ITorneoRepository torneoRepository, IJugadorRepository jugadorRepository,
+            IPartidoRepository partidoRepository, IGeneroRepository generoRepository,
+            IJugarTorneoService jugarTorneoService, IJugadorService jugadorService)
         {
             _torneoTenisContext = torneoTenisContex;
-        }
-
-        public async Task AgregarTorneo(TorneoManualRequest nuevoTorneo)
-        {
-            var potencialTorneoDuplicado = await _torneoTenisContext.Set<Torneo>()
-                                            .Where(a => a.Nombre == nuevoTorneo.Nombre)
-                                            .Where(a => a.Anio == nuevoTorneo.Anio)
-                                            .FirstOrDefaultAsync();
-
-            if (potencialTorneoDuplicado != null)
-                throw new Exception("Este Torneo ya esta registrado");
-
-            var nuevoTorneoAAgregar = nuevoTorneo.ToTorneo();
-
-            _torneoTenisContext.Add(nuevoTorneoAAgregar);
-
-            await _torneoTenisContext.SaveChangesAsync();
+            _torneoRepository = torneoRepository;
+            _jugadorRepository = jugadorRepository;
+            _partidoRepository = partidoRepository;
+            _generoRepository = generoRepository;
+            _jugarTorneoService = jugarTorneoService;
+            _jugadorService = jugadorService;
         }
 
 
-        public async Task<TorneoResponse> BuscarTorneo(int id)
+        public async Task<TorneoResponse> BuscarTorneo(string nombre,int anio)
         {
+            var TorneoId = await _torneoRepository
+                .ObtenerIdPorNombreYAnio(nombre, anio);
 
-            // ESTO SE DEBE PASAR A UN SERVICIO BUSCAR_TORNEO_POR_ID:
+            if (TorneoId == 0) 
+                throw new BadRequestException("Problema al buscar torneo","El torneo no se encuentra");
 
-            var TorneoEspecífico = await _torneoTenisContext.Set<Torneo>()
-                                    .Where(a =>a.Id == id).FirstOrDefaultAsync();
+            var PartidosDelTorneo = await _partidoRepository.BuscarPartidosPorTorneoId(TorneoId);
 
-            if (TorneoEspecífico == null || TorneoEspecífico.Eliminado) 
-                throw new Exception("El torneo no se encuentra");
-            // fin
+            //MAQUETADO DE RESPONSE
 
-            var response = TorneoEspecífico.ToTorneoResponse();
+            var Fixture = new List<PartidoResponse>();
+
+            foreach (var partido in PartidosDelTorneo)
+            {
+                var ganador = await _jugadorRepository.ObtenerJugadorPorId(partido.IdGanador);
+                var perdedor = await _jugadorRepository.ObtenerJugadorPorId(partido.IdPerdedor);
+                var ganadorDTO = ganador.ToJugadorDTO();
+                var perdedorDTO = perdedor.ToJugadorDTO();
+
+                Fixture.Add(partido.ToPartidoResponse(ganadorDTO, perdedorDTO));
+            }
+
+            var response = Fixture.ToTorneoResponse(nombre,anio);
 
             return response;
             
         }
 
 
-        public async Task ActualizarTorneo(int id, TorneoManualRequest TorneoActualizado)
+        public async Task EliminarTorneo(TorneoDTO torneo)
         {
 
-            var torneoExistente = await _torneoTenisContext.Set<Torneo>()
-                        .Where(a => a.Id == id).FirstOrDefaultAsync();
+            var TorneoEspecifico = await _torneoRepository
+                .ObtenerTorneoPorNombreYAnio(torneo.Nombre, torneo.Anio);
 
-            if (torneoExistente == null || torneoExistente.Eliminado)
-            {
-                throw new Exception("El torneo no se encuentra");
-            }
+            if (TorneoEspecifico == null || TorneoEspecifico.Eliminado)
+                throw new BadRequestException("Problema al eliminar torneo","El torneo no se encuentra");
 
-            torneoExistente.ToTorneoUpdate(TorneoActualizado);
-
-            await _torneoTenisContext.SaveChangesAsync();
-        }
-
-        public async Task EliminarTorneo(int id)
-        {
-
-            var torneoExistente = await _torneoTenisContext.Set<Torneo>()
-                        .Where(a => a.Id == id).FirstOrDefaultAsync();
-
-            if (torneoExistente == null || torneoExistente.Eliminado)
-            {
-                throw new Exception("El torneo no se encuentra");
-            }
-
-            torneoExistente.ToTorneoDelete();
+            TorneoEspecifico.ToTorneoDelete();
 
             await _torneoTenisContext.SaveChangesAsync();
         }
 
 
-        public async Task<List<TorneoResponse>> BuscarTorneos()
+        public async Task<List<TorneoWithGeneroDTO>> BuscarTorneos()
         {
 
-            var Torneoes = await _torneoTenisContext.Set<Torneo>()
-                                            .Where(a =>a.Eliminado == false).ToListAsync();
+            var Torneos = await _torneoRepository.ObtenerTodosLosTorneos();
 
-            var response = Torneoes.Select(j => j.ToTorneoResponse()).ToList();
+            var generoDiccionario = await _generoRepository.ObtenerDiccionarioDeDescripcionesDeGeneros();
+
+            var response = Torneos.Select(j => j.ToTorneoWithGeneroDTO(generoDiccionario[j.IdGenero])).ToList();
             
             return response;
 
         }
 
-        public async Task AgregarTorneoCompleto(TorneoCompletoRequest torneoCompleto, bool EsTorneoMasculino)
+
+        public async Task<JugadorResponse> CrearTorneo(TorneoRequestExistentes TorneoRequest, int IdGenero)
         {
-            var potencialTorneoDuplicado = await _torneoTenisContext.Set<Torneo>()
-                                            .Where(a => a.Nombre == torneoCompleto.NuevoTorneo.Nombre && 
-                                            a.Anio == torneoCompleto.NuevoTorneo.Anio && 
-                                            a.EsTorneoMasculino == EsTorneoMasculino)                                            
-                                            .FirstOrDefaultAsync();
 
+            ////////////////////VERIFICACIONES:
 
-            if (potencialTorneoDuplicado != null)
-                throw new Exception("Este Torneo ya esta registrado");
+            var JugadoresDelTorneo = await VerificarYArmarLista(TorneoRequest, IdGenero);
 
-            var nuevoTorneoAAgregar = torneoCompleto.ToTorneoCompleto(EsTorneoMasculino);
+            ////////////////////DESARROLLO:
+
+            var nuevoTorneoAAgregar = TorneoRequest.Torneo.ToTorneo(IdGenero);
 
             _torneoTenisContext.Add(nuevoTorneoAAgregar);
-
             await _torneoTenisContext.SaveChangesAsync();
 
-            var Torneo = await _torneoTenisContext.Set<Torneo>()
-                                            .Where(a => a.Nombre == torneoCompleto.NuevoTorneo.Nombre)
-                                            .Where(a => a.Anio == torneoCompleto.NuevoTorneo.Anio)
-                                            .FirstOrDefaultAsync();
-            var IdTorneo = Torneo.Id;
+            var IdTorneo = nuevoTorneoAAgregar.Id;
 
+            int etapaInicial = JugadoresDelTorneo.Count - 1;
 
-            var jugadorService = new JugadorService(_torneoTenisContext);
-            var partidoService = new PartidoService(_torneoTenisContext);
+            // INICIAR EL TORNEO
+            var torneo = await _jugarTorneoService.JugarRondasDeTorneo(JugadoresDelTorneo, IdTorneo, etapaInicial);
 
+            if (torneo == null) 
+                throw new BadRequestException("Error en el torneo", "No se pudo conseguir el ganador");
+
+            var generoDiccionario = await _generoRepository.ObtenerDiccionarioDeNombresDeGeneros();
+
+            var ganador = torneo.ToJugadorResponse(generoDiccionario[IdGenero]);
+
+            return ganador;
+
+        }
+
+        public async Task<JugadorResponse> RegistrarJugadoresYCrearTorneo(TorneoRequestNuevos torneoRequest, int IdGenero)
+        {
+            await _jugadorService.AgregarJugadorDesdeLista(torneoRequest.Jugadores, IdGenero);
+
+            var torneoExistentes = torneoRequest.NuevosToTorneoExistentes();
+
+            return await CrearTorneo(torneoExistentes, IdGenero);
+        }
+
+        private async Task<List<Jugador>> VerificarYArmarLista(TorneoRequestExistentes TorneoRequest, int IdGenero)
+        {
+            // VERIFICAR QUE EL TORNEO NO ESTÉ YA EN LA DB
+            var potencialTorneoDuplicadoId = await _torneoRepository
+                .ObtenerIdPorNombreYAnio(TorneoRequest.Torneo.Nombre, TorneoRequest.Torneo.Anio);
+
+            if (potencialTorneoDuplicadoId != 0)
+                throw new BadRequestException("Problema al crear torneo", "Este Torneo ya está registrado");
+
+            // VERIFICAR LA CANTIDAD DE JUGADORES
+            var CantidadDeJugadores = TorneoRequest.Jugadores.Count();
+            if (CantidadDeJugadores == 0 || (CantidadDeJugadores & (CantidadDeJugadores - 1)) != 0)
+                throw new BadRequestException("Problema al crear torneo", "La cantidad de participantes no es válida (Debe ser potencia de 2)");
+
+            // ARMAR LA LISTA DE JUGADORES Y VERIFICAR GENERO
             List<Jugador> JugadoresDelTorneo = new List<Jugador>();
+            HashSet<string> jugadoresUnicos = new HashSet<string>();
 
-            var Count = 0;
-            var fechaActual = DateTime.Now;
-
-            foreach (var i in torneoCompleto.Jugadores)
+            foreach (var i in TorneoRequest.Jugadores)
             {
-                Count += 1;
-                var JugadorEspecífico = await _torneoTenisContext.Set<Jugador>()
-                                    .Where(a => a.Nombre == i.Nombre && a.Apellido == i.Apellido)
-                                    .FirstOrDefaultAsync();
+                var JugadorEspecifico = await _jugadorRepository
+                    .ObtenerJugadorPorNombreYApellido(i.Nombre, i.Apellido);
 
-                JugadoresDelTorneo.Add(JugadorEspecífico);
+                if (JugadorEspecifico == null)
+                    throw new BadRequestException("Problema al crear torneo", $"No se encuentra el registro de {i.Nombre} {i.Apellido}");
+                if (JugadorEspecifico.IdGenero != IdGenero)
+                    throw new BadRequestException("Problema al crear torneo", $"El género del torneo no es compatible con {i.Nombre} {i.Apellido}");
 
+                var jugadorKey = $"{JugadorEspecifico.Nombre} {JugadorEspecifico.Apellido}";
+                if (jugadoresUnicos.Contains(jugadorKey))
+                    throw new BadRequestException("Problema al crear torneo", $"El jugador {i.Nombre} {i.Apellido} está duplicado en el torneo");
 
+                jugadoresUnicos.Add(jugadorKey);
+                JugadoresDelTorneo.Add(JugadorEspecifico);
             }
 
-            var GanadorYPerdedor = ElegirGanadorAuxiliar.ElegirGanador(JugadoresDelTorneo[0], JugadoresDelTorneo[1]);
-
-
-            await partidoService.AgregarPartido(new PartidoRequest
-            {
-                Etapa = 99,
-                Anio = fechaActual.Year,
-                Mes = fechaActual.Month,
-                Dia = fechaActual.Day,
-                IdGanador = GanadorYPerdedor.ganador.Id,
-                IdPerdedor = GanadorYPerdedor.perdedor.Id,
-                IdTorneo = IdTorneo,
-                DescripcionGanador = "string"
-            });
-
-
-
+            return JugadoresDelTorneo;
         }
-
-
-
-
-
-        //private readonly TorneoTenisContext _TorneoTenisContext;
-        //public List<TorneoWithTorneoResponse> GetAllTorneoWithTorneo(string torneo)
-        //{
-        //throw new NotImplementedException();
-        //}
 
     }
 }
