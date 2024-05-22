@@ -137,12 +137,6 @@ namespace TorneoTenis.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Eliminado")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("Eliminado");
-
                     b.Property<int>("Etapa")
                         .HasMaxLength(2)
                         .HasColumnType("int")
@@ -211,6 +205,38 @@ namespace TorneoTenis.API.Migrations
                     b.HasIndex("IdGenero");
 
                     b.ToTable("Torneo", (string)null);
+                });
+
+            modelBuilder.Entity("TorneoTenis.API.Models.Entities.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Password");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("RefreshToken");
+
+                    b.Property<DateTime?>("RefreshTokenExpiration")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("RefreshTokenExpiration");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("TorneoTenis.API.Models.Entities.Jugador", b =>

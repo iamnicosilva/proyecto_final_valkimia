@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TorneoTenis.API.Migrations
 {
     /// <inheritdoc />
-    public partial class tabla_genero : Migration
+    public partial class tablausuario : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +25,22 @@ namespace TorneoTenis.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genero", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuario",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiration = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuario", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,8 +101,7 @@ namespace TorneoTenis.API.Migrations
                     Fecha = table.Column<DateTime>(type: "datetime2", maxLength: 100, nullable: false),
                     Ganador = table.Column<int>(type: "int", nullable: false),
                     Perdedor = table.Column<int>(type: "int", nullable: false),
-                    Torneo = table.Column<int>(type: "int", nullable: false),
-                    Eliminado = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Torneo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,6 +164,9 @@ namespace TorneoTenis.API.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Partido");
+
+            migrationBuilder.DropTable(
+                name: "Usuario");
 
             migrationBuilder.DropTable(
                 name: "Jugador");

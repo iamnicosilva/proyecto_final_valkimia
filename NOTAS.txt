@@ -4,7 +4,7 @@
 
 
 COMANDOS:
-dotnet ef migrations add act_torneogenero
+dotnet ef migrations add tablausuario
 dotnet ef database update
 Script-Migration
 

@@ -7,6 +7,7 @@ using System.Net;
 using TorneoTenis.API.Services.Interfaces;
 using TorneoTenis.API.Models.DTO;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TorneoTenis.API.Controllers
 {
@@ -23,6 +24,7 @@ namespace TorneoTenis.API.Controllers
 
         //CREATE JUGADOR:
         [HttpPost]
+        [Authorize]
         [Route("/crearJugadorHombre")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -33,6 +35,7 @@ namespace TorneoTenis.API.Controllers
         }
         //CREATE JUGADORA:
         [HttpPost]
+        [Authorize]
         [Route("/crearJugadoraMujer")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -44,6 +47,7 @@ namespace TorneoTenis.API.Controllers
 
         //CREATE JUGADORES DESDE LISTA:
         [HttpPost]
+        [Authorize]
         [Route("/crearJugadoresHombresDesdeLista")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -54,6 +58,7 @@ namespace TorneoTenis.API.Controllers
         }
         //CREATE JUGADORAS DESDE LISTA:
         [HttpPost]
+        [Authorize]
         [Route("/crearJugadorasMujeresDesdeLista")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -78,6 +83,7 @@ namespace TorneoTenis.API.Controllers
 
         //UPDATE JUGADOR:
         [HttpPut]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [Route("/actualizarJugador/{nombre}/{apellido}")]
@@ -88,6 +94,7 @@ namespace TorneoTenis.API.Controllers
 
         //DELETE JUGADOR:
         [HttpPut]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [Route("/eliminarJugador/")]
